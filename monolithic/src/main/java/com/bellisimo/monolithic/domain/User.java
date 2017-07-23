@@ -1,32 +1,30 @@
 package com.bellisimo.monolithic.domain;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import javax.persistence.*;
 
 /**
  * Created by siphokazi on 2017/07/17.
  */
-@Entity
+//@Entity
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /*@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)*/
     private Long id;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private Boolean isAdmin;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String username;
 
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String password;
 
 

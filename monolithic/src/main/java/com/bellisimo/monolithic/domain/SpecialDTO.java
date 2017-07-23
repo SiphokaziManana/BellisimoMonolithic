@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by siphokazi on 2017/07/17.
  */
-public class SpecialDTO implements AbstractDTO<Special, SpecialDTO> {
+public class SpecialDTO {
 
     private Long id;
     private String description;
@@ -73,45 +73,4 @@ public class SpecialDTO implements AbstractDTO<Special, SpecialDTO> {
         this.image = image;
     }
 
-
-    @Override
-    public Special toEntity(SpecialDTO dto) {
-        Special result = new Special();
-        result.setId(dto.getId());
-        result.setDescription(dto.getDescription());
-        result.setPercentage(dto.getPercentage());
-        result.setStartDate(dto.getStartDate());
-        result.setEndDate(dto.getEndDate());
-        result.setName(dto.getName());
-        result.setImage(dto.getImage());
-        return result;
-    }
-
-    @Override
-    public SpecialDTO toDTO(Special entity) {
-        SpecialDTO result = new SpecialDTO();
-        result.setId(entity.getId());
-        result.setDescription(entity.getDescription());
-        result.setEndDate(entity.getEndDate());
-        result.setStartDate(entity.getStartDate());
-        result.setImage(entity.getImage());
-        result.setName(entity.getName());
-        result.setPercentage(entity.getPercentage());
-        return result;
-    }
-
-    @Override
-    public List<Special> toEntities(List<SpecialDTO> dto) {
-        return null;
-    }
-
-    @Override
-    public List<SpecialDTO> toDTOs(List<Special> entities) {
-        List<SpecialDTO> results = new ArrayList<>();
-        for (Special entity : entities) {
-            SpecialDTO result = toDTO(entity);
-            results.add(result);
-        }
-        return results;
-    }
 }

@@ -7,28 +7,31 @@ import java.util.Date;
  * Created by siphokazi on 2017/07/17.
  */
 @Entity
+@Table( name = "special")
 public class Special {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column( name = "id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "name")
     private String name;
 
-    @Column
+    @Column( name = "description")
     private String description;
 
-    @Column (nullable = false)
+    @Column (nullable = false, name = "percentage")
     private Double percentage;
 
-    @Column (nullable = false)
+    @Column (nullable = false, name = "startDate")
     private Date startDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "endDate")
     private Date endDate;
 
-    @Column
+    @JoinColumn(name = "image")
+    @OneToOne
     private Image image;
 
     public Long getId(){

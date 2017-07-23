@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by siphokazi on 2017/07/17.
  */
-public class ItemDTO implements AbstractDTO<Item, ItemDTO> {
+public class ItemDTO {
 
     private Long id;
     private String name;
@@ -14,7 +14,7 @@ public class ItemDTO implements AbstractDTO<Item, ItemDTO> {
     private Double price;
     private String category;
     private Image image;
-    private Special specialDTO;
+    private SpecialDTO special;
     private Boolean hasSpecial;
 
 
@@ -66,12 +66,12 @@ public class ItemDTO implements AbstractDTO<Item, ItemDTO> {
         return image;
     }
 
-    public void setSpecialDTO(Special specialDTO) {
-        this.specialDTO = specialDTO;
+    public void setSpecial(SpecialDTO special) {
+        this.special = special;
     }
 
-    public Special getSpecialDTO() {
-        return specialDTO;
+    public SpecialDTO getSpecial() {
+        return special;
     }
 
     public void setHasSpecial(Boolean hasSpecial) {
@@ -82,55 +82,4 @@ public class ItemDTO implements AbstractDTO<Item, ItemDTO> {
         return hasSpecial;
     }
 
-    @Override
-    public Item toEntity(ItemDTO dto) {
-        Item result = new Item();
-
-        result.setId(dto.getId());
-        result.setName(dto.getName());
-        result.setCode(dto.getCode());
-        if (dto.getCategory().equals("FOOD")){
-            result.setCategory(Item.Category.FOOD);
-        }
-        else if ( dto.getCategory().equals("CLOTHING")){
-            result.setCategory(Item.Category.CLOTHING);
-        }
-        else{
-            result.setCategory(Item.Category.UNKNOWN);
-        }
-        result.setPrice(dto.getPrice());
-        result.setImage(dto.getImage());
-        result.setHasSpecial(dto.getHasSpecial());
-        result.setSpecial(dto.getSpecialDTO());
-        return result;
-    }
-
-    @Override
-    public ItemDTO toDTO(Item entity) {
-        ItemDTO result = new ItemDTO();
-        result.setId(entity.getId());
-        result.setCategory(entity.getCategory().toString());
-        result.setCode(entity.getCode());
-        result.setHasSpecial(entity.getHasSpecial());
-        result.setName(entity.getName());
-        result.setImage(entity.getImage());
-        result.setSpecialDTO(entity.getSpecial());
-        result.setPrice(entity.getPrice());
-        return result;
-    }
-
-    @Override
-    public List<Item> toEntities(List<ItemDTO> dto) {
-        return null;
-    }
-
-    @Override
-    public List<ItemDTO> toDTOs(List<Item> entities) {
-        List<ItemDTO> results = new ArrayList<>();
-        for (Item entity : entities) {
-            ItemDTO result = toDTO(entity);
-            results.add(result);
-        }
-        return results;
-    }
 }

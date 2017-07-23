@@ -1,0 +1,93 @@
+
+
+--DROP SEQUENCE IF EXISTS public.item_id_seq;
+CREATE SEQUENCE public.item_id_seq
+INCREMENT 1
+MINVALUE 1
+MAXVALUE 9223372036854775807
+START 14
+CACHE 1;
+ALTER TABLE public.item_id_seq
+  OWNER TO cos700;
+
+--DROP SEQUENCE IF EXISTS public.special_id_seq;
+CREATE SEQUENCE public.special_id_seq
+INCREMENT 1
+MINVALUE 1
+MAXVALUE 9223372036854775807
+START 14
+CACHE 1;
+ALTER TABLE public.special_id_seq
+  OWNER TO cos700;
+
+--DROP SEQUENCE IF EXISTS public.image_id_seq;
+CREATE SEQUENCE public.image_id_seq
+INCREMENT 1
+MINVALUE 1
+MAXVALUE 9223372036854775807
+START 14
+CACHE 1;
+ALTER TABLE public.image_id_seq
+  OWNER TO cos700;
+
+--DROP TABLE IF EXISTS image;
+CREATE TABLE image(
+  id BIGINT NOT NULL ,
+  name VARCHAR(100) NOT NULL ,
+  uuid VARCHAR(50) NOT NULL ,
+  contentType VARCHAR(100)
+)
+WITH (
+OIDS = FALSE
+);
+ALTER TABLE image
+  OWNER TO cos700;
+
+--DROP TABLE IF EXISTS special;
+CREATE TABLE special
+(
+  id BIGINT NOT NULL ,
+  name VARCHAR(50) NOT NULL ,
+  description VARCHAR(255),
+  percentage NUMERIC NOT NULL ,
+  startDate TIMESTAMP NOT NULL ,
+  endDate TIMESTAMP NOT NULL ,
+  image BIGINT,
+  CONSTRAINT special_pkey PRIMARY KEY (id),
+  CONSTRAINT fk_image_special_fkey FOREIGN KEY (image) REFERENCES public.image (id) MATCH SIMPLE
+)
+WITH (
+OIDS = FALSE
+);
+ALTER TABLE special
+    OWNER TO cos700;
+
+
+--DROP TABLE IF EXISTS item;
+CREATE TABLE item
+(
+  id bigint NOT NULL,
+  name VARCHAR(50) NOT NULL ,
+  code VARCHAR(6) NOT NULL,
+  price NUMERIC NOT NULL,
+  category VARCHAR(50) NOT NULL ,
+  image BIGINT,
+  hasSpecial BOOLEAN,
+  special BIGINT,
+  CONSTRAINT item_pkey PRIMARY KEY (id),
+  CONSTRAINT fk_item_special FOREIGN KEY (special)
+    REFERENCES special(id) MATCH SIMPLE,
+  CONSTRAINT fk_item_image FOREIGN KEY (image)
+  REFERENCES image(id) MATCH SIMPLE
+  ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+OIDS=FALSE
+);
+ALTER TABLE item
+  OWNER TO cos700;
+
+
+
+
+

@@ -6,19 +6,21 @@ import javax.persistence.*;
  * Created by siphokazi on 2017/07/17.
  */
 @Entity
+@Table( name = "image")
 public class Image {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 36)
+    @Column(unique = true, nullable = false, length = 50, name = "uuid")
     private String uuid;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 100, name = "name")
     private String name;
 
-    @Column
+    @Column( name = "contentType")
     private String contentType;
 
 

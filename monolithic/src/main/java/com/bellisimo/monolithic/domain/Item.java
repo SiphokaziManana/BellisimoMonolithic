@@ -7,32 +7,35 @@ import javax.persistence.*;
  */
 
 @Entity
+@Table( name = "item")
 public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column( name = "id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "name")
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "code")
     private String code;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "price")
     private Double price;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "category")
     private Category category;
 
-    @Column(nullable = false)
+    @JoinColumn(name = "image")
+    @OneToOne
     private Image image;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "hasSpecial")
     private Boolean hasSpecial;
 
-    @Column
-    @OneToMany
+    @JoinColumn (name = "special")
+    @ManyToOne
     private Special special;
 
     public Long getId(){
