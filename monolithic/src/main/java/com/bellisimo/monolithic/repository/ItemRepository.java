@@ -11,5 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long>{
 
+    @Override
+    Item findOne(Long aLong);
 
+    Item findByCode(String code);
 }

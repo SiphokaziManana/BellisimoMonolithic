@@ -1,5 +1,8 @@
 package com.bellisimo.monolithic.domain;
 
+import com.bellisimo.monolithic.mapper.SpecialMapper;
+
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +11,9 @@ import java.util.List;
  * Created by siphokazi on 2017/07/17.
  */
 public class SpecialDTO {
+
+    @Inject
+    SpecialMapper specialMapper;
 
     private Long id;
     private String description;
@@ -71,6 +77,10 @@ public class SpecialDTO {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public Special toEntity(){
+        return specialMapper.specialDTOToSpecial(this);
     }
 
 }

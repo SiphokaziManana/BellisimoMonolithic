@@ -18,7 +18,7 @@ public class Item {
     @Column(nullable = false, name = "name")
     private String name;
 
-    @Column(nullable = false, name = "code")
+    @Column(nullable = false, name = "code", unique = true)
     private String code;
 
     @Column(nullable = false, name = "price")
@@ -95,8 +95,23 @@ public class Item {
     }
 
     public enum Category{
-        FOOD,
-        CLOTHING,
-        UNKNOWN
+        FOOD("Food"),
+        CLOTHING("Clothing"),
+        UNKNOWN("Unknown");
+
+        private String name;
+
+        Category(String name){ this.name = name; }
+
+        public String getName() {return name;}
+
+        public static Category fromName(String name) {
+            for (Category procedureState : Category.values()) {
+                if (procedureState.name.equalsIgnoreCase(name)) {
+                    return procedureState;
+                }
+            }
+            throw new IllegalArgumentException("No such category: " + name);
+        }
     }
 }

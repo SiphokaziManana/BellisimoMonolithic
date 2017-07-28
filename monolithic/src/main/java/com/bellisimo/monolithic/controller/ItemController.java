@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /*import javax.inject.Inject;
 import java.util.List;*/
@@ -26,21 +27,33 @@ public class ItemController  {
     @Inject
     ItemService itemService;
 
-    @RequestMapping( value = "/add" , method = RequestMethod.POST)
-    public ResponseEntity<ItemDTO> addItem(@RequestBody ItemDTO dto){
-        ItemDTO result = itemService.addItem(dto);
-        return ResponseEntity.ok(result);
+
+    @PostMapping("/add")
+    public HttpStatus addItem(@RequestBody ItemDTO dto){
+        itemService.addItem(dto);
+        return HttpStatus.OK;
     }
 
-    /*@RequestMapping( value = "/update", method = RequestMethod.PUT)
+    @PutMapping("/update")
     public HttpStatus updateItem( @RequestBody ItemDTO dto){
-
+        itemService.updateItem(dto);
         return  HttpStatus.OK;
     }
 
-    @RequestMapping( value = "/list" , method = RequestMethod.GET)
+    @GetMapping("/list")
     public List<ItemDTO> getItems(){
         return itemService.getAllItems();
-    }*/
+    }
+
+    @GetMapping("/find/{id}")
+    public ItemDTO getItem(@PathVariable Long id){
+        return  itemService.getItem(id);
+    }
+
+    @DeleteMapping("/remove/{id}")
+    public HttpStatus deleteItem(@PathVariable Long id){
+        itemService.deleteItem(id);
+        return HttpStatus.OK;
+    }
 
 }

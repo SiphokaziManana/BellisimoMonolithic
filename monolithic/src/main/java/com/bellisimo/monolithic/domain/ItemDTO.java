@@ -1,5 +1,8 @@
 package com.bellisimo.monolithic.domain;
 
+import com.bellisimo.monolithic.mapper.ItemMapper;
+
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +11,14 @@ import java.util.List;
  */
 public class ItemDTO {
 
+    @Inject
+    ItemMapper itemMapper;
+
     private Long id;
     private String name;
     private String code;
     private Double price;
-    private String category;
+    private Item.Category category;
     private Image image;
     private SpecialDTO special;
     private Boolean hasSpecial;
@@ -50,11 +56,11 @@ public class ItemDTO {
         return price;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Item.Category category) {
         this.category = category;
     }
 
-    public String getCategory() {
+    public Item.Category getCategory() {
         return category;
     }
 
@@ -80,6 +86,10 @@ public class ItemDTO {
 
     public Boolean getHasSpecial() {
         return hasSpecial;
+    }
+
+    public Item toEntity(){
+        return itemMapper.itemDTOToItem(this);
     }
 
 }

@@ -1,6 +1,6 @@
 
 
---DROP SEQUENCE IF EXISTS public.item_id_seq;
+DROP SEQUENCE IF EXISTS public.item_id_seq;
 CREATE SEQUENCE public.item_id_seq
 INCREMENT 1
 MINVALUE 1
@@ -35,7 +35,8 @@ CREATE TABLE image(
   id BIGINT NOT NULL ,
   name VARCHAR(100) NOT NULL ,
   uuid VARCHAR(50) NOT NULL ,
-  contentType VARCHAR(100)
+  contentType VARCHAR(100),
+  CONSTRAINT image_pkey PRIMARY KEY (id)
 )
 WITH (
 OIDS = FALSE
