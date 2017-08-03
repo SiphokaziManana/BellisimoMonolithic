@@ -80,11 +80,43 @@ public class ItemService {
     }
 
     public ItemDTO getItem(Long id){
-        return itemMapper.itemToItemDTO(itemRepository.findOne(id));
+        Item item = itemRepository.findOne(id);
+        if ( item.getHasSpecial()){
+            Double specialPrice = item.getPrice() * item.getSpecial().getPercentage();
+            item.setPrice(specialPrice);
+        }
+        return itemMapper.itemToItemDTO(item);
     }
 
     public void deleteItem(Long id){
         itemRepository.delete(id);
+    }
+
+    public Boolean addSpecialToItem(ItemDTO dto){
+        Item item = itemRepository.findOne(dto.getId());
+        if (item != null){
+            if (dto.getSpecial() == null){
+                item.setHasSpecial(true);
+                item.setSpecial(dto.getSpecial().toEntity());
+                return true;
+            }
+            else{
+                throw new CustomException("There is no special found to be applied to the item");
+            }
+        }
+        else
+        {
+            throw new CustomException("A special cannot be applied to the item as the item does not exist");
+        }
+
+    }
+
+    public void removeSpecialFromItem(Long id){
+        Item item = itemRepository.findOne(id);
+        if (item != null){
+            item.setHasSpecial(false);
+            item.setSpecial(null);
+        }
     }
 
 }

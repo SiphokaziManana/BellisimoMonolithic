@@ -56,4 +56,16 @@ public class ItemController  {
         return HttpStatus.OK;
     }
 
+    @PostMapping("/add/special")
+    public HttpStatus addSpecialToItem(@RequestBody ItemDTO dto){
+        itemService.addSpecialToItem(dto);
+        return HttpStatus.OK;
+    }
+
+    @PutMapping("/remove/special/{itemId}")
+    public HttpStatus removeSpecialFromItem(@PathVariable Long itemId){
+        itemService.removeSpecialFromItem(itemId);
+        return HttpStatus.OK;
+    }
+
 }
