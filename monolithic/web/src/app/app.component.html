@@ -1,16 +1,48 @@
-<div class="header-container">
-    <header>
-        <h1 class="title">My Angular2 + TypeScript App</h1>
-    </header>
-</div>
 
-<div class="main-container">
-    <router-outlet></router-outlet>
-</div>
+<!--<nav class="navbar  navbar-dark bg-dark ">
+  <span class="h1" class="navbar-brand mb-0">Bellisimo</span>
+  <div class="container justify-content-end">
+    <a class="nav-link active" href="#">Dashboard</a>
+    <a class="nav-link " routerLink="/clothing" routerLinkActive="active">Clothing</a>
+    <a class="nav-link" routerLink="/food" routerLinkActive="active">Food</a>
+  </div>
+</nav>-->
 
-<div class="footer-container">
-    <footer>
-        <a routerLink="/">Home</a> | <a routerLink="/about" routerLinkActive="active">About</a>
-        <span>&copy; 2016</span>
-    </footer>
-</div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Bellisimo</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbar">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/clothing" routerLinkActive="active">Clothing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/food" routerLinkActive="active">Food</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Register</a>
+      </li>
+    </ul>
+    <form *ngIf="!loggedInUser" class="form-inline my-2 my-lg-0">
+      <div class="input-group">
+        <span class="input-group-addon" id="user-name-label">@</span>
+        <input type="email" class="form-control" placeholder="Email" aria-label="Email">
+      </div>
+
+      <div class="input-group">
+        <input type="password" class="form-control" placeholder="Password" aria-label="Passwords">
+      </div>
+      <!--<input class="form-control mr-sm-2" type="text" placeholder="Username">-->
+      <button *ngIf="!loggedInUser" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+      <button *ngIf="loggedInUser" claswe s="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout</button>
+    </form>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

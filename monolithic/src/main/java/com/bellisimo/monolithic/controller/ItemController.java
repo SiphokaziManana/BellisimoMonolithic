@@ -20,6 +20,7 @@ import java.util.List;*/
 /**
  * Created by siphokazi on 2017/07/17.
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/item")
 public class ItemController  {

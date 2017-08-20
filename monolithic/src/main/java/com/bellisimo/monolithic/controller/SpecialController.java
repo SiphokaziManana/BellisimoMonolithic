@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Created by siphokazi on 2017/07/27.
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/special")
 public class SpecialController {

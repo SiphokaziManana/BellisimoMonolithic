@@ -18,7 +18,7 @@ public class Item {
     @Column(nullable = false, name = "name")
     private String name;
 
-    @Column(nullable = false, name = "code", unique = true)
+    @Column(nullable = false, name = "code") // don't know if I need to alter the constraint in db migrations or not
     private String code;
 
     @Column(nullable = false, name = "price")
@@ -114,4 +114,28 @@ public class Item {
             throw new IllegalArgumentException("No such category: " + name);
         }
     }
+   /* public enum Code{
+        CLO("CLO"),
+        UND("UND"),
+        SHO("SHO"),
+        MEA("MEA"),
+        FRU("FRU"),
+        DAI("DAI");
+
+
+        private String name;
+
+        Code(String name){ this.name = name; }
+
+        public String getName() {return name;}
+
+        public static Category fromName(String name) {
+            for (Category procedureState : Category.values()) {
+                if (procedureState.name.equalsIgnoreCase(name)) {
+                    return procedureState;
+                }
+            }
+            throw new IllegalArgumentException("No such code: " + name);
+        }
+    }*/
 }

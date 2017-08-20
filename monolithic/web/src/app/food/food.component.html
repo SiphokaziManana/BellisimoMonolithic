@@ -1,0 +1,119 @@
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-3">Food Item List</h1>
+    <p class="lead">Below is a list of all the food items offered by Bellisimo</p>
+    <hr class="my-4">
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      Launch demo modal
+    </button>
+
+    <p>Search for an item via its name here: </p>
+    <div class="col-lg-6" name="filterSearch">
+      <form class="form-inline my-2 my-lg-0 ">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+      <div *ngIf="isAdmin && isLoggedIn">
+        <span><button href="#" name="btnMeat" class="btn btn-outline-success btn-block"> Add a meat item </button></span>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor = "let meat of meatItems" >
+            <div class="card">
+              <img class="card-img-top" src="" alt="Card image cap">
+              <div class="card-body">
+                <h4 class="card-title">{{ meat.name }}</h4>
+                <p class="card-text">R {{ meat.price}}</p>
+                <a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', meat.id]"  >Details</a>
+                <a *ngIf="isAdmin && isLoggedIn"  href="#" class=" btn btn-outline-primary"> Update </a>
+                <a *ngIf="isAdmin && isLoggedIn" (click)="delete(meat); $event.stopPropagation()" href="#" class="btn btn-outline-danger"> Delete </a>
+              </div>
+            </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+      <div *ngIf="isAdmin && isLoggedIn">
+        <span><button href="#" name="btnMeat" class="btn btn-outline-success btn-block"> Add a fruit/veg item </button></span>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor = "let fruit of fruitItems">
+          <div class="card">
+            <img class="card-img-top" src="" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title">{{ fruit.name }}</h4>
+              <p class="card-text">R {{ fruit.price}}</p>
+              <a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', fruit.id]"  >Details</a>
+              <a *ngIf="isAdmin && isLoggedIn"  href="#" class=" btn btn-outline-primary"> Update </a>
+              <a *ngIf="isAdmin && isLoggedIn" (click)="delete(fruit); $event.stopPropagation()" href="#" class="btn btn-outline-danger"> Delete </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+      <div *ngIf="isAdmin && isLoggedIn">
+        <span><button href="#" name="btnMeat" class="btn btn-outline-success btn-block"> Add a dairy item </button></span>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor = "let dairy of dairyItems">
+          <div class="card" >
+            <img class="card-img-top" src="" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title">{{ dairy.name }}</h4>
+              <p class="card-text">R {{ dairy.price}}</p>
+              <a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', dairy.id]"  >Details</a>
+              <a *ngIf="isAdmin && isLoggedIn"  href="#" class=" btn btn-outline-primary"> Update </a>
+              <a *ngIf="isAdmin && isLoggedIn" (click)="delete(dairy); $event.stopPropagation()" href="#" class="btn btn-outline-danger"> Delete </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!--<modal id="foodDetailModal">
+    <div class="modal"> &lt;!&ndash;google what modal-backdrop is&ndash;&gt;
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3> Details of {{ foodItem.name }} </h3>
+        </div>
+        <div class="modal-body">
+          <p> This  is where I will put the modal body info about item: {{foodItem.name}}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-warning" type="button" data-toggle="data-dismiss" > Close</button>
+        </div>
+      </div>
+    </div>
+  </modal>-->
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

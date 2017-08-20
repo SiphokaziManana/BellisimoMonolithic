@@ -1,15 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-
-import 'bootstrap/dist/css/bootstrap.css';
-import '../css/main.css';
+import { Component } from '@angular/core';
 
 @Component({
-    selector: 'my-app',
-    template: require('./app.component.html')
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
-
-export class AppComponent implements OnInit {
-    ngOnInit() {
-        console.log('AppComponent initializing...');
-    }
+export class AppComponent {
+  title = 'Welcome to Bellisimo';
+  loggedInUser = true;
 }
