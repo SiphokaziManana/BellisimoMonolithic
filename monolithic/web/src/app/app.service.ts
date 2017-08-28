@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Food} from "./food/food";
-
-
+import {Clothing} from "./clothing/clothing";
 
 @Injectable()
 export class AppService {
@@ -55,6 +54,25 @@ export class AppService {
       .then(() => null)
       .catch(this.handleError);
   }
+
+  getAllClothingItems() : Promise<Clothing[]>{
+    return this.http.get(this.BASE_URL + "/item/list").toPromise()
+      .then(response => response.json() as Clothing[])
+      .catch(this.handleError);
+  }
+
+  createSpecial(): void{
+
+  }
+
+  addClothingItemToSpecial(): void{
+
+  }
+
+  addFoodItemToSpecial():void{
+
+  }
+
 
 
 }

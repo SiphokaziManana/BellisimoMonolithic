@@ -1,3 +1,152 @@
-<p>
-  clothing works!
-</p>
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-3">Clothing Item List</h1>
+    <p class="lead">Below is a list of all the clothing items offered by Bellisimo</p>
+    <hr class="my-4">
+    <div class="row">
+      <div class="col-8">
+        <p>Search for an item via its name here: </p>
+        <!--<div class="col-lg-6" name="filterSearch">-->
+          <form class="form-inline my-2 my-lg-0 ">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        <!--</div>-->
+      </div>
+      <div class="col-4">
+          <a class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#clothingSpecialModal" > Create Special</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+      <div *ngIf="isAdmin && isLoggedIn">
+        <span><button href="#" name="btnCloth" class="btn btn-outline-success btn-block"> Add a clothing item </button></span>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor = "let cloth of clothItems" >
+          <div class="card">
+            <img class="card-img-top" src="" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title">{{ cloth.name }}</h4>
+              <p class="card-text">R {{ cloth.price}}</p>
+              <!--<a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', meat.id]"  >Details</a>-->
+              <a href="#" class="btn btn-outline-secondary"  (click)="onSelect(cloth); " data-toggle="modal" data-target="#clothingDetailModal"  >Details</a>
+              <a *ngIf="isAdmin && isLoggedIn"  href="#" class=" btn btn-outline-primary"> Update </a>
+              <a *ngIf="isAdmin && isLoggedIn" (click)="delete(cloth); $event.stopPropagation()" href="#" class="btn btn-outline-danger"> Delete </a>
+              <span *ngIf="cloth.hasSpecial" class="badge badge-secondary"> Special</span>
+              <a *ngIf="!cloth.hasSpecial && isAdmin" class="btn btn-outline-info">Add to Special</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+      <div *ngIf="isAdmin && isLoggedIn">
+        <span><button href="#" name="btnUnderWear" class="btn btn-outline-success btn-block"> Add an underwear item </button></span>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor = "let underwear of underwearItems">
+          <div class="card">
+            <img class="card-img-top" src="" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title">{{ underwear.name }}</h4>
+              <p class="card-text">R {{ underwear.price}}</p>
+              <!--<a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', fruit.id]"  >Details</a>-->
+              <a href="#" class="btn btn-outline-secondary"  (click)="onSelect(underwear); " data-toggle="modal" data-target="#clothingDetailModal"  >Details</a>
+              <a *ngIf="isAdmin && isLoggedIn"  href="#" class=" btn btn-outline-primary"> Update </a>
+              <a *ngIf="isAdmin && isLoggedIn" (click)="delete(underwear); $event.stopPropagation()" href="#" class="btn btn-outline-danger"> Delete </a>
+              <span *ngIf="underwear.hasSpecial" class="badge badge-secondary"> Special</span>
+              <a *ngIf="!underwear.hasSpecial && isAdmin" class="btn btn-outline-info">Add to Special</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+      <div *ngIf="isAdmin && isLoggedIn">
+        <span><button href="#" name="btnMeat" class="btn btn-outline-success btn-block"> Add a shoe item </button></span>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor = "let shoe of shoeItems">
+          <div class="card" >
+            <img class="card-img-top" src="" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title">{{ shoe.name }}</h4>
+              <p class="card-text">R {{ shoe.price}}</p>
+              <!--<a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', dairy.id]"  >Details</a>-->
+              <a href="#" class="btn btn-outline-secondary"  (click)="onSelect(shoe); " data-toggle="modal" data-target="#clothingDetailModal"  >Details</a>
+              <a *ngIf="isAdmin && isLoggedIn"  href="#" class=" btn btn-outline-primary"> Update </a>
+              <a *ngIf="isAdmin && isLoggedIn" (click)="delete(shoe); $event.stopPropagation()" href="#" class="btn btn-outline-danger"> Delete </a>
+              <span *ngIf="shoe.hasSpecial" class="badge badge-secondary"> Special</span>
+              <a *ngIf="!shoe.hasSpecial && isAdmin" class="btn btn-outline-info">Add to Special</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Clothing Detail Modal -->
+  <div *ngIf="item" class="modal fade" id="clothingDetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Details of {{ item.name }} item</h5>
+        </div>
+        <div class="modal-body">
+          <label> Item Name:    {{ item.name }}</label> <br>
+          <label> Item Price:    {{ item.price }}</label><br>
+          <label> Item on Special: </label> <label *ngIf="item.hasSpecial"> Yes</label> <label *ngIf="!item.hasSpecial"> No</label><br>
+          <label *ngIf="item.special"> Special Name: {{item.special}}</label>
+          <label> Item Description:    {{ item.name  }} can be found at your nearest Bellisimo store.</label><br>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Clothing Special Modal-->
+  <div class="modal fade" id="clothingSpecialModal" tabindex="-1" role="dialog" aria-labelledby="clothingSpecialModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="clothingSpecialModalLabel">Create Special</h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="specialName">Name:</label>
+              <input type="text" class="form-control" id="specialName"  placeholder="Select a name for the special">
+              <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+            </div>
+            <div class="form-group">
+              <label for="specialPercentage">Percentage Discount: </label>
+              <input type="text" class="form-control" id="specialPercentage" aria-describedby="discount" placeholder="Percentage Discount">
+              <small id="discount" class="form-text text-muted">E.g: 40 will mean a 40% discount on items in this special</small>
+            </div>
+            <div class="form-group">
+              <label for="specialStartDate">Start Date: </label>
+              <input type="text" class="form-control" id="specialStartDate"  placeholder="Click here">
+              <!--<small id="discount" class="form-text text-muted">E.g: 40 will mean a 40% discount on items in this special</small>-->
+            </div>
+            <div class="form-group">
+              <label for="specialEndDate">End Date: </label>
+              <input type="text" class="form-control" id="specialEndDate"  placeholder="Click here">
+              <!--<small id="discount" class="form-text text-muted">E.g: 40 will mean a 40% discount on items in this special</small>-->
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-success"> Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

@@ -18,8 +18,8 @@ export class FoodComponent implements OnInit {
   meatItems : Food[] = [];
   fruitItems : Food[] = [];
   dairyItems: Food[] = [];
-  isAdmin = false;
-  isLoggedIn = false;
+  isAdmin = true;
+  isLoggedIn = true;
 
 
 

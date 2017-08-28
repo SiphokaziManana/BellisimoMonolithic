@@ -4,17 +4,19 @@
     <p class="lead">Below is a list of all the food items offered by Bellisimo</p>
     <hr class="my-4">
 
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-      Launch demo modal
-    </button>
-
-    <p>Search for an item via its name here: </p>
-    <div class="col-lg-6" name="filterSearch">
-      <form class="form-inline my-2 my-lg-0 ">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-      </form>
+    <div class="row">
+      <div class="col-8">
+        <p>Search for an item via its name here: </p>
+        <!--<div class="col-lg-6" name="filterSearch">-->
+        <form class="form-inline my-2 my-lg-0 ">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <!--</div>-->
+      </div>
+      <div class="col-4">
+        <a class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#foodSpecialModal" > Create Special</a>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -29,9 +31,12 @@
               <div class="card-body">
                 <h4 class="card-title">{{ meat.name }}</h4>
                 <p class="card-text">R {{ meat.price}}</p>
-                <a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', meat.id]"  >Details</a>
+                <!--<a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', meat.id]"  >Details</a>-->
+                <a href="#" class="btn btn-outline-secondary"  (click)="onSelect(meat); " data-toggle="modal" data-target="#foodDetailModal"  >Details</a>
                 <a *ngIf="isAdmin && isLoggedIn"  href="#" class=" btn btn-outline-primary"> Update </a>
                 <a *ngIf="isAdmin && isLoggedIn" (click)="delete(meat); $event.stopPropagation()" href="#" class="btn btn-outline-danger"> Delete </a>
+                <span *ngIf="meat.hasSpecial" class="badge badge-secondary"> Special</span>
+                <a *ngIf="!meat.hasSpecial && isAdmin" class="btn btn-outline-info">Add to Special</a>
               </div>
             </div>
         </li>
@@ -48,9 +53,12 @@
             <div class="card-body">
               <h4 class="card-title">{{ fruit.name }}</h4>
               <p class="card-text">R {{ fruit.price}}</p>
-              <a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', fruit.id]"  >Details</a>
+              <!--<a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', fruit.id]"  >Details</a>-->
+              <a href="#" class="btn btn-outline-secondary"  (click)="onSelect(fruit); " data-toggle="modal" data-target="#foodDetailModal"  >Details</a>
               <a *ngIf="isAdmin && isLoggedIn"  href="#" class=" btn btn-outline-primary"> Update </a>
               <a *ngIf="isAdmin && isLoggedIn" (click)="delete(fruit); $event.stopPropagation()" href="#" class="btn btn-outline-danger"> Delete </a>
+              <span *ngIf="fruit.hasSpecial" class="badge badge-secondary"> Special</span>
+              <a *ngIf="!fruit.hasSpecial && isAdmin" class="btn btn-outline-info">Add to Special</a>
             </div>
           </div>
         </li>
@@ -67,9 +75,12 @@
             <div class="card-body">
               <h4 class="card-title">{{ dairy.name }}</h4>
               <p class="card-text">R {{ dairy.price}}</p>
-              <a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', dairy.id]"  >Details</a>
+              <!--<a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', dairy.id]"  >Details</a>-->
+              <a href="#" class="btn btn-outline-secondary"  (click)="onSelect(dairy); " data-toggle="modal" data-target="#foodDetailModal"  >Details</a>
               <a *ngIf="isAdmin && isLoggedIn"  href="#" class=" btn btn-outline-primary"> Update </a>
               <a *ngIf="isAdmin && isLoggedIn" (click)="delete(dairy); $event.stopPropagation()" href="#" class="btn btn-outline-danger"> Delete </a>
+              <span *ngIf="dairy.hasSpecial" class="badge badge-secondary"> Special</span>
+              <a *ngIf="!dairy.hasSpecial && isAdmin" class="btn btn-outline-info">Add to Special</a>
             </div>
           </div>
         </li>
@@ -77,43 +88,67 @@
     </div>
   </div>
 
-  <!--<modal id="foodDetailModal">
-    <div class="modal"> &lt;!&ndash;google what modal-backdrop is&ndash;&gt;
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3> Details of {{ foodItem.name }} </h3>
-        </div>
-        <div class="modal-body">
-          <p> This  is where I will put the modal body info about item: {{foodItem.name}}</p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-warning" type="button" data-toggle="data-dismiss" > Close</button>
-        </div>
-      </div>
-    </div>
-  </modal>-->
-
-
-
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div *ngIf="item" class="modal fade" id="foodDetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <h5 class="modal-title" id="exampleModalLabel">Details of {{ item.name }} item</h5>
         </div>
         <div class="modal-body">
-          ...
+           <label> Item Name:    {{ item.name }}</label> <br>
+           <label> Item Price:    {{ item.price }}</label><br>
+           <label> Item on Special: </label> <label *ngIf="item.hasSpecial"> Yes</label> <label *ngIf="!item.hasSpecial"> No</label><br>
+          <label *ngIf="item.special"> Special Name: {{item.special}}</label>
+           <label> Item Description:    {{ item.name  }} can be found at your nearest Bellisimo store.</label><br>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
   </div>
+
+  <!--Food Special Modal-->
+  <div class="modal fade" id="foodSpecialModal" tabindex="-1" role="dialog" aria-labelledby="foodSpecialModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="foodSpecialModalLabel">Create Special</h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="specialName">Name:</label>
+              <input type="text" class="form-control" id="specialName"  placeholder="Select a name for the special">
+              <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+            </div>
+            <div class="form-group">
+              <label for="specialPercentage">Percentage Discount: </label>
+              <input type="text" class="form-control" id="specialPercentage" aria-describedby="discount" placeholder="Percentage Discount">
+              <small id="discount" class="form-text text-muted">E.g: 40 will mean a 40% discount on items in this special</small>
+            </div>
+            <div class="form-group">
+              <label for="specialStartDate">Start Date: </label>
+              <input type="text" class="form-control" id="specialStartDate"  placeholder="Click here">
+              <!--<small id="discount" class="form-text text-muted">E.g: 40 will mean a 40% discount on items in this special</small>-->
+            </div>
+            <div class="form-group">
+              <label for="specialEndDate">End Date: </label>
+              <input type="text" class="form-control" id="specialEndDate"  placeholder="Click here">
+              <!--<small id="discount" class="form-text text-muted">E.g: 40 will mean a 40% discount on items in this special</small>-->
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-success"> Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
 
 </div>
