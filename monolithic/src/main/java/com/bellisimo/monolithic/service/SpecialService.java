@@ -8,6 +8,10 @@ import com.bellisimo.monolithic.repository.SpecialRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.time.LocalDateTime;
+import java.time.MonthDay;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 /**
@@ -24,6 +28,8 @@ public class SpecialService {
 
     public SpecialDTO add(SpecialDTO dto){
         try {
+            dto.setStartDate(LocalDateTime.now());
+            dto.setEndDate(LocalDateTime.now().plus(20, ChronoUnit.DAYS));
             Special obj = specialRepository.save(specialMapper.specialDTOToSpecial(dto));
             SpecialDTO result = specialMapper.specialToSpecialDTO(obj);
             return result;

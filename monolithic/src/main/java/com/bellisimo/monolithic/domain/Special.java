@@ -1,6 +1,7 @@
 package com.bellisimo.monolithic.domain;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -25,10 +26,10 @@ public class Special {
     private Double percentage;
 
     @Column (nullable = false, name = "startDate")
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @Column(nullable = false, name = "endDate")
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @JoinColumn(name = "image")
     @OneToOne
@@ -62,17 +63,17 @@ public class Special {
         this.percentage = percentage;
     }
 
-    public Date getStartDate(){
+    public LocalDateTime getStartDate(){
         return startDate;
     }
-    public void  setStartDate(Date startDate){
+    public void  setStartDate(LocalDateTime startDate){
         this.startDate = startDate;
     }
 
-    public Date getEndDate(){
+    public LocalDateTime getEndDate(){
         return endDate;
     }
-    public void  setEndDate(Date endDate){
+    public void  setEndDate(LocalDateTime endDate){
         this.endDate = endDate;
     }
 

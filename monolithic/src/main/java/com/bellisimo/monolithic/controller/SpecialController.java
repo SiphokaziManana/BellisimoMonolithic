@@ -1,5 +1,6 @@
 package com.bellisimo.monolithic.controller;
 
+import com.bellisimo.monolithic.domain.ResponseDTO;
 import com.bellisimo.monolithic.domain.SpecialDTO;
 import com.bellisimo.monolithic.service.SpecialService;
 import org.springframework.http.*;
@@ -21,15 +22,16 @@ public class SpecialController {
 
 
     @PostMapping("/add")
-    public HttpStatus add(@RequestBody SpecialDTO dto){
+    public ResponseDTO add(@RequestBody SpecialDTO dto){
+
         specialService.add(dto);
-        return HttpStatus.OK;
+        return new ResponseDTO("The special was created successfully");
     }
 
     @PutMapping("/update")
-    public HttpStatus update( @RequestBody SpecialDTO dto){
+    public ResponseDTO update( @RequestBody SpecialDTO dto){
         specialService.update(dto);
-        return  HttpStatus.OK;
+        return  new ResponseDTO("The special was updated successfully");
     }
 
     @GetMapping("/list")
@@ -43,8 +45,8 @@ public class SpecialController {
     }
 
     @DeleteMapping("/remove/{id}")
-    public HttpStatus deleteItem(@PathVariable Long id){
+    public ResponseDTO deleteItem(@PathVariable Long id){
         specialService.delete(id);
-        return HttpStatus.OK;
+        return new ResponseDTO("The special was deleted successfully");
     }
 }

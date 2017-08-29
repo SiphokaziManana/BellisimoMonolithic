@@ -3,6 +3,7 @@ package com.bellisimo.monolithic.domain;
 import com.bellisimo.monolithic.mapper.SpecialMapper;
 
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +19,8 @@ public class SpecialDTO {
     private Long id;
     private String description;
     private Double percentage;
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String name;
     private Image image;
 
@@ -47,19 +48,19 @@ public class SpecialDTO {
         this.percentage = percentage;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

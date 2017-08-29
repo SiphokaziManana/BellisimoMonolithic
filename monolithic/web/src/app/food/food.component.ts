@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { Router } from "@angular/router";
 import { ModalModule } from 'ngx-bootstrap';
 
 import { Food } from './food';
 import { AppService } from '../app.service';
+import {Special} from "../special";
 
 
 @Component({
@@ -18,16 +19,18 @@ export class FoodComponent implements OnInit {
   meatItems : Food[] = [];
   fruitItems : Food[] = [];
   dairyItems: Food[] = [];
+  specialForItem : Special;
+  new_special = new Special();
+  specials : Special[] = [];
   isAdmin = true;
   isLoggedIn = true;
-
-
 
   constructor(private service : AppService, private router: Router) {
   }
 
   ngOnInit() : void {
     this.getFoodItems();
+    this.getSpecials();
   }
 
   getFoodItems() : void{
@@ -35,6 +38,10 @@ export class FoodComponent implements OnInit {
       this.foodItems = result;
       this.sortFoodItems();
     });
+  }
+
+  getSpecials():void{
+    this.service.getAllSpecials().then(result => this.specials = result );
   }
 
   sortFoodItems(): void{
@@ -53,7 +60,6 @@ export class FoodComponent implements OnInit {
       }
     }
   }
-
 
   onSelect(food: Food) : void{
     this.item = food;
@@ -84,4 +90,23 @@ export class FoodComponent implements OnInit {
       });
   }
 
+  chosenSpecial(special: Special) : void{
+    this.specialForItem = special;
+  }
+
+  addSpecialToItem():void{
+    if ( this.item && this.specialForItem){
+      this.service.addSpecialToFoodItem(this.item, this.specialForItem);
+    }
+    else {
+
+    }
+  }
+
+  onSubmitFoodSpecialForm(): void {
+    console.log("submitting the special form", this.new_special);
+    this.service.createSpecial(this.new_special).then(result => {
+      console.log("the result is: ", result.json());
+    });
+  }
 }

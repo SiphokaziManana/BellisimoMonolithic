@@ -3,6 +3,7 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Food} from "./food/food";
 import {Clothing} from "./clothing/clothing";
+import {Special} from "./special";
 
 @Injectable()
 export class AppService {
@@ -61,8 +62,21 @@ export class AppService {
       .catch(this.handleError);
   }
 
-  createSpecial(): void{
-
+  createSpecial(special: Special): Promise<Response>{
+    const body = JSON.stringify({
+      id : null,
+      name : special.name,
+      percentage : special.percentage,
+      description: "The special description",
+      startDate : null,
+      endDate : null,
+      image : null
+    });
+    //description : special.description,
+    //.post(url, JSON.stringify({name: name}), {headers: this.headers})
+    return this.http.post(this.BASE_URL+"/special/add", body, {headers: this.headers})
+      .toPromise()
+      .then(result => result.json() as Response);
   }
 
   addClothingItemToSpecial(): void{
@@ -73,6 +87,16 @@ export class AppService {
 
   }
 
+  getAllSpecials() : Promise<Special[]>{
+    return this.http.get(this.BASE_URL + "/special/list").toPromise()
+      .then(response => response.json() as Special[])
+      .catch(this.handleError);
+  }
 
-
+  //@TODO: make this method return something meaningful
+  addSpecialToFoodItem(item : Food, special : Special ) : Promise<Response>{
+    return this.http.post(this.BASE_URL + "/item/add/special", {item : item, special : special, headers: this.headers})
+      .toPromise()
+      .then(result => result.json() as Response);
+  }
 }

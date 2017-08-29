@@ -15,7 +15,7 @@
         <!--</div>-->
       </div>
       <div class="col-4">
-        <a class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#foodSpecialModal" > Create Special</a>
+        <a href="#" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#foodSpecialModal" > Create Special</a>
       </div>
     </div>
   </div>
@@ -33,10 +33,10 @@
                 <p class="card-text">R {{ meat.price}}</p>
                 <!--<a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', meat.id]"  >Details</a>-->
                 <a href="#" class="btn btn-outline-secondary"  (click)="onSelect(meat); " data-toggle="modal" data-target="#foodDetailModal"  >Details</a>
-                <a *ngIf="isAdmin && isLoggedIn"  href="#" class=" btn btn-outline-primary"> Update </a>
-                <a *ngIf="isAdmin && isLoggedIn" (click)="delete(meat); $event.stopPropagation()" href="#" class="btn btn-outline-danger"> Delete </a>
+                <a *ngIf="isAdmin && isLoggedIn" href="#" (click)="onSelect(meat);"  data-toggle="modal"  data-target="#foodUpdateModal"   class=" btn btn-outline-primary"> Update </a>
+                <a *ngIf="isAdmin && isLoggedIn" href="#" data-toggle="modal" data-target="#foodDeleteModal" class="btn btn-outline-danger"> Delete </a> <!--(click)="delete(meat); $event.stopPropagation()"-->
                 <span *ngIf="meat.hasSpecial" class="badge badge-secondary"> Special</span>
-                <a *ngIf="!meat.hasSpecial && isAdmin" class="btn btn-outline-info">Add to Special</a>
+                <a *ngIf="!meat.hasSpecial && isAdmin" (click)="onSelect(meat);" href="#" data-toggle="modal" data-target="#addSpecialToItemModal" class="btn btn-outline-info">Add to Special</a>
               </div>
             </div>
         </li>
@@ -112,43 +112,128 @@
   <!--Food Special Modal-->
   <div class="modal fade" id="foodSpecialModal" tabindex="-1" role="dialog" aria-labelledby="foodSpecialModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="foodSpecialModalLabel">Create Special</h5>
-        </div>
-        <div class="modal-body">
-          <form>
+      <form #foodSpecialForm="ngForm" (ngSubmit)="onSubmitFoodSpecialForm()">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="foodSpecialModalLabel">Create Special</h5>
+          </div>
+          <div class="modal-body">
             <div class="form-group">
               <label for="specialName">Name:</label>
-              <input type="text" class="form-control" id="specialName"  placeholder="Select a name for the special">
-              <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+              <input type="text" class="form-control" id="specialName" [(ngModel)]="new_special.name" name="name" placeholder="Select a name for the special" required>
             </div>
             <div class="form-group">
               <label for="specialPercentage">Percentage Discount: </label>
-              <input type="text" class="form-control" id="specialPercentage" aria-describedby="discount" placeholder="Percentage Discount">
+              <input type="number" class="form-control" id="specialPercentage" [(ngModel)]="new_special.percentage" name="percentage"  aria-describedby="discount" placeholder="Percentage Discount" required>
               <small id="discount" class="form-text text-muted">E.g: 40 will mean a 40% discount on items in this special</small>
             </div>
             <div class="form-group">
               <label for="specialStartDate">Start Date: </label>
-              <input type="text" class="form-control" id="specialStartDate"  placeholder="Click here">
-              <!--<small id="discount" class="form-text text-muted">E.g: 40 will mean a 40% discount on items in this special</small>-->
+              <input type="datetime-local" class="form-control" id="specialStartDate" [(ngModel)]="new_special.startDate" name="startDate" placeholder="Click here">
             </div>
             <div class="form-group">
               <label for="specialEndDate">End Date: </label>
-              <input type="text" class="form-control" id="specialEndDate"  placeholder="Click here">
-              <!--<small id="discount" class="form-text text-muted">E.g: 40 will mean a 40% discount on items in this special</small>-->
+              <input type="datetime-local" class="form-control" id="specialEndDate" [(ngModel)]="new_special.endDate" name="endDate" placeholder="Click here">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success" [disabled]="!foodSpecialForm.valid">Create</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!--Food Update Modal
+  <div *ngIf="item" class="modal fade" id="foodUpdateModal" tabindex="-1" role="dialog" aria-labelledby="foodUpdateModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="foodUpdateModalLabel">Update Food Item Details</h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="foodName">Current Name: {{ item.name }}</label>
+              <input type="text" class="form-control" id="foodName"  placeholder="Change the name for the item">
+              &lt;!&ndash;<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>&ndash;&gt;
+            </div>
+            <div class="form-group">
+              <label for="foodPrice">Current Price: {{ item.price }} </label>
+              <input type="text" class="form-control" id="foodPrice" aria-describedby="priceExplain" placeholder="Percentage Discount">
+              <small id="priceExplain" class="form-text text-muted">Enter the price up to two decimal digits</small>
+            </div>
+            <div class="form-group">
+              <label for="foodImage">Change the display image: </label>
+              <input type="text" class="form-control" id="foodImage"  placeholder="Something done to change the image">
+              &lt;!&ndash;<small id="discount" class="form-text text-muted">E.g: 40 will mean a 40% discount on items in this special</small>&ndash;&gt;
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-success"> Create</button>
+          <button type="submit" class="btn btn-success"> Update</button>
         </div>
       </div>
     </div>
   </div>
 
 
+  &lt;!&ndash;Food Delete Modal&ndash;&gt;
+  <div *ngIf="item" class="modal fade" id="foodDeleteModal" tabindex="-1" role="dialog" aria-labelledby="foodDeleteModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="foodDeleteModalLabel">Delete? Really?</h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="foodName">Are you sure you want to delete {{ item.name }} item? </label>
+              <p> Deleting this item will permanently remove it from the database. </p>
+              &lt;!&ndash;<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>&ndash;&gt;
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">No, I changed my mind</button>
+          <button type="submit" class="btn btn-success"> Yes, delete this item</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  &lt;!&ndash;Add Special to Item Modal&ndash;&gt;
+  <div *ngIf="item && specials" class="modal fade" id="addSpecialToItemModal" tabindex="-1" role="dialog" aria-labelledby="addSpecialToItemModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addSpecialToItemModalLabel">Apply Special</h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            &lt;!&ndash;<div class="form-group">
+              <label>Choose a special to apply this item to: </label>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor = "let special of specials">
+
+                </li>
+              </ul>
+            </div>&ndash;&gt;
+            <div class="list-group">
+              <button type="button" (click)="chosenSpecial(special)" class="list-group-item list-group-item-action">{{ special.name }}</button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success"> Apply Special</button>
+        </div>
+      </div>
+    </div>
+  </div>
+-->
 
 </div>
