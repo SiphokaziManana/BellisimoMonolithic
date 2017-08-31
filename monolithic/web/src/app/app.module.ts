@@ -24,6 +24,7 @@ import 'bootstrap';
     ClothingDetailComponent,
     FoodDetailComponent,
     DashboardComponent
+
   ],
   imports: [
     BrowserModule,

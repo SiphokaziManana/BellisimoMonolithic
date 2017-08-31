@@ -30,7 +30,21 @@ public class SpecialService {
         try {
             dto.setStartDate(LocalDateTime.now());
             dto.setEndDate(LocalDateTime.now().plus(20, ChronoUnit.DAYS));
-            Special obj = specialRepository.save(specialMapper.specialDTOToSpecial(dto));
+
+            if (dto.getStartDate() == null){
+                System.out.println("******************************");
+                System.out.println("ERRROR");
+                System.out.println("******************************");
+            }
+
+            Special special = specialMapper.specialDTOToSpecial(dto);
+            if ( special.getStartDate() == null || special.getEndDate() == null){
+                System.out.println("******************************");
+                System.out.println("ERRROR something is very wrong");
+                System.out.println("******************************");
+            }
+
+            Special obj = specialRepository.save(special);
             SpecialDTO result = specialMapper.specialToSpecialDTO(obj);
             return result;
         }catch (Exception e){

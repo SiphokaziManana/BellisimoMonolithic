@@ -23,7 +23,7 @@ public class SpecialController {
 
     @PostMapping("/add")
     public ResponseDTO add(@RequestBody SpecialDTO dto){
-
+        System.out.println("creating special");
         specialService.add(dto);
         return new ResponseDTO("The special was created successfully");
     }

@@ -1,4 +1,6 @@
 
+import {Special} from "../special";
+
 export class Food{
   id : number;
   name : string;
@@ -6,7 +8,7 @@ export class Food{
   price : number;
   category : string;
   image : string;
-  special : number;
+  special : Special;
   hasSpecial: boolean;
 
   constructor(){}

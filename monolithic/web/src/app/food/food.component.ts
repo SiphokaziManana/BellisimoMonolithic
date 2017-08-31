@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { Router } from "@angular/router";
 import { ModalModule } from 'ngx-bootstrap';
+import { NgForm } from '@angular/forms';
 
 import { Food } from './food';
 import { AppService } from '../app.service';
@@ -24,6 +25,10 @@ export class FoodComponent implements OnInit {
   specials : Special[] = [];
   isAdmin = true;
   isLoggedIn = true;
+  alertMessage : string;
+  alert : boolean = false;
+  specialAlert : boolean = false;
+  special_id : number;
 
   constructor(private service : AppService, private router: Router) {
   }
@@ -41,7 +46,10 @@ export class FoodComponent implements OnInit {
   }
 
   getSpecials():void{
-    this.service.getAllSpecials().then(result => this.specials = result );
+    this.service.getAllSpecials().then(result => {
+      this.specials = result;
+      console.log("All the specials", this.specials);
+    } );
   }
 
   sortFoodItems(): void{
@@ -89,24 +97,47 @@ export class FoodComponent implements OnInit {
         }
       });
   }
-
+//***************************************************************************************
+//********************************** SPECIALS *******************************************
+//***************************************************************************************
   chosenSpecial(special: Special) : void{
     this.specialForItem = special;
   }
 
-  addSpecialToItem():void{
-    if ( this.item && this.specialForItem){
-      this.service.addSpecialToFoodItem(this.item, this.specialForItem);
-    }
-    else {
-
-    }
-  }
-
-  onSubmitFoodSpecialForm(): void {
+  onSubmitFoodSpecialForm(form : NgForm): void {
     console.log("submitting the special form", this.new_special);
     this.service.createSpecial(this.new_special).then(result => {
-      console.log("the result is: ", result.json());
+      console.log("the result is: ", result);
+      form.reset();
+      this.alertMessage = result.message;
+      this.alert = true;
     });
+  }
+
+  onSubmitSpecialToItemForm(form : NgForm) : void{
+
+    console.log("loking at form: ");
+    console.log("form: ", form.value);
+    console.log("special_id = ", this.special_id);
+    for ( let special of this.specials){
+      if ( special.id === this.special_id){
+        this.specialForItem = special;
+      }
+    }
+
+    /*this.service.addFoodItemToSpecial(this.item, this.specialForItem).then(
+        result => {
+          this.alertMessage = result.message;
+          this.specialAlert = true;
+          form.reset();
+        }
+    );*/
+
+  }
+
+
+
+  falsifyAlert():void{
+    this.alert = false;
   }
 }

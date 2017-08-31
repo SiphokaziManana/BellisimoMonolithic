@@ -1,6 +1,6 @@
 
 
-export class Response{
+export class CustomResponse{
   message : string;
   constructor(){}
 }
