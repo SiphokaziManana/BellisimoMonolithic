@@ -29,6 +29,7 @@ export class FoodComponent implements OnInit {
   alert : boolean = false;
   specialAlert : boolean = false;
   special_id : number;
+  new_item = new Food();
 
   constructor(private service : AppService, private router: Router) {
   }
@@ -78,16 +79,6 @@ export class FoodComponent implements OnInit {
     this.router.navigate(['/food', this.item.id]);
   }*/
 
-  add(name: string): void {
-    name = name.trim();
-    if (!name) { return; }
-    this.service.createFoodItem(name)
-      .then(food => {
-        this.foodItems.push(food);
-        this.item = null;
-      });
-  }
-
   delete(food: Food) : void{
     this.service.delete(food.id)
       .then( () => {
@@ -95,7 +86,23 @@ export class FoodComponent implements OnInit {
         if (this.item === food){
           this.item = null;
         }
+        window.location.reload();
+        this.alertMessage = "Item successfully deleted";
+        this.alert=true;
+
       });
+  }
+
+  falsifyAlert():void{
+    this.alert = false;
+  }
+
+  displaySpecialForItem(): string{
+    for ( let special of this.specials){
+      if ( special.id == this.item.special){
+        return special.name;
+      }
+    }
   }
 //***************************************************************************************
 //********************************** SPECIALS *******************************************
@@ -116,28 +123,83 @@ export class FoodComponent implements OnInit {
 
   onSubmitSpecialToItemForm(form : NgForm) : void{
 
-    console.log("loking at form: ");
-    console.log("form: ", form.value);
-    console.log("special_id = ", this.special_id);
     for ( let special of this.specials){
-      if ( special.id === this.special_id){
+      if ( special.id == this.special_id){
         this.specialForItem = special;
       }
     }
-
-    /*this.service.addFoodItemToSpecial(this.item, this.specialForItem).then(
+    this.service.addFoodItemToSpecial(this.item, this.specialForItem).then(
         result => {
           this.alertMessage = result.message;
           this.specialAlert = true;
           form.reset();
         }
-    );*/
+    );
+  }
+
+  //***************************************************************************************
+//********************************** ADD ITEMS *******************************************
+//***************************************************************************************
+
+  onSubmitAddMeatItemForm(form: NgForm): void{
+    this.new_item.code = "MEA";
+    this.new_item.category = "FOOD";
+    this.new_item.image = null;
+    this.new_item.special = null;
+    this.new_item.hasSpecial= false;
+    this.service.createFoodItem(this.new_item)
+      .then(result => {
+        this.meatItems.push(result);
+        window.location.reload();
+      });
+  }
+
+  onSubmitAddFruitItemForm(form: NgForm): void{
+    this.new_item.code = "FRU";
+    this.new_item.category = "FOOD";
+    this.new_item.image = null;
+    this.new_item.special = null;
+    this.new_item.hasSpecial= false;
+    this.service.createFoodItem(this.new_item)
+      .then(result => {
+        this.meatItems.push(result);
+        window.location.reload();
+      });
 
   }
 
-
-
-  falsifyAlert():void{
-    this.alert = false;
+  onSubmitAddDairyItemForm(form: NgForm): void{
+    this.new_item.code = "DAI";
+    this.new_item.category = "FOOD";
+    this.new_item.image = null;
+    this.new_item.special = null;
+    this.new_item.hasSpecial= false;
+    this.service.createFoodItem(this.new_item)
+      .then(result => {
+        this.meatItems.push(result);
+        window.location.reload();
+      });
   }
+
+  //***************************************************************************************
+//********************************** UPDATE ITEMS *****************************************
+//***************************************************************************************
+
+  onSubmitFoodUpdateForm(form : NgForm): void{
+    this.service.updateFoodItem(this.item)
+      .then( result => {
+        window.location.reload();
+      })
+  }
+
+  removeSpecial(food : Food){
+    food.special = null;
+    food.hasSpecial = false;
+    this.service.updateFoodItem(food)
+      .then( result => {
+        window.location.reload();
+      });
+  }
+
+
 }

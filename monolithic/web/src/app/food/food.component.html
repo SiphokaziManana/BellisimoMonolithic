@@ -29,21 +29,21 @@
   <div class="row">
     <div class="col-lg-4 col-md-6 col-sm-6">
       <div *ngIf="isAdmin && isLoggedIn">
-        <span><button href="#" name="btnMeat" class="btn btn-outline-success btn-block"> Add a meat item </button></span>
+        <span><button href="#"  data-toggle="modal" data-target="#addMeatItemModal"   name="btnMeat" class="btn btn-outline-success btn-block"> Add a meat item </button></span>
       </div>
       <ul class="list-group">
         <li class="list-group-item" *ngFor = "let meat of meatItems" >
             <div class="card">
               <img class="card-img-top" src="" alt="Card image cap">
               <div class="card-body">
-                <h4 class="card-title">{{ meat.name }}</h4>
+                <h4 class="card-title">{{ meat.name }}  <span *ngIf="meat.hasSpecial" class="badge badge-secondary"> Special</span></h4>
                 <p class="card-text">R {{ meat.price}}</p>
                 <!--<a href="#" class="btn btn-outline-secondary"  [routerLink]="['/food', meat.id]"  >Details</a>-->
                 <a href="#" class="btn btn-outline-secondary"  (click)="onSelect(meat); " data-toggle="modal" data-target="#foodDetailModal"  >Details</a>
                 <a *ngIf="isAdmin && isLoggedIn" href="#" (click)="onSelect(meat);"  data-toggle="modal"  data-target="#foodUpdateModal"   class=" btn btn-outline-primary"> Update </a>
-                <a *ngIf="isAdmin && isLoggedIn" href="#" data-toggle="modal" data-target="#foodDeleteModal" class="btn btn-outline-danger"> Delete </a> <!--(click)="delete(meat); $event.stopPropagation()"-->
-                <span *ngIf="meat.hasSpecial" class="badge badge-secondary"> Special</span>
-                <a *ngIf="!meat.hasSpecial && isAdmin" (click)="onSelect(meat);" href="#" data-toggle="modal" data-target="#addSpecialToItemModal" class="btn btn-outline-info">Add to Special</a>
+                <a *ngIf="isAdmin && isLoggedIn" href="#" data-toggle="modal" (click)="onSelect(meat);" data-target="#foodDeleteModal" class="btn btn-outline-danger"> Delete </a> <!--(click)="delete(meat); $event.stopPropagation()"-->
+                <a *ngIf="!meat.hasSpecial && isAdmin" (click)="onSelect(meat);" href="#" data-toggle="modal" data-target="#addSpecialToItemModal" class="btn btn-outline-info">Add Special</a>
+                <a *ngIf="meat.hasSpecial && isAdmin" (click)="removeSpecial(meat);" href="#"  class="btn btn-outline-info">Remove Special</a>
               </div>
             </div>
         </li>
@@ -106,7 +106,7 @@
            <label> Item Name:    {{ item.name }}</label> <br>
            <label> Item Price:    {{ item.price }}</label><br>
            <label> Item on Special: </label> <label *ngIf="item.hasSpecial"> Yes</label> <label *ngIf="!item.hasSpecial"> No</label><br>
-          <label *ngIf="item.special"> Special Name: {{item.special}}</label>
+          <label *ngIf="item.special"> Special Name: {{ displaySpecialForItem() }}</label>
            <label> Item Description:    {{ item.name  }} can be found at your nearest Bellisimo store.</label><br>
         </div>
         <div class="modal-footer">
@@ -156,32 +156,27 @@
   <div *ngIf="item" class="modal fade" id="foodUpdateModal" tabindex="-1" role="dialog" aria-labelledby="foodUpdateModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="foodUpdateModalLabel">Update Food Item Details</h5>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="foodName">Current Name: {{ item.name }}</label>
-              <input type="text" class="form-control" id="foodName"  placeholder="Change the name for the item">
-              &lt;!&ndash;<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>&ndash;&gt;
-            </div>
-            <div class="form-group">
-              <label for="foodPrice">Current Price: {{ item.price }} </label>
-              <input type="text" class="form-control" id="foodPrice" aria-describedby="priceExplain" placeholder="Percentage Discount">
-              <small id="priceExplain" class="form-text text-muted">Enter the price up to two decimal digits</small>
-            </div>
-            <div class="form-group">
-              <label for="foodImage">Change the display image: </label>
-              <input type="text" class="form-control" id="foodImage"  placeholder="Something done to change the image">
-              &lt;!&ndash;<small id="discount" class="form-text text-muted">E.g: 40 will mean a 40% discount on items in this special</small>&ndash;&gt;
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-success"> Update</button>
-        </div>
+        <form  #foodUpdateForm="ngForm" (ngSubmit)="onSubmitFoodUpdateForm(foodUpdateForm)" >
+          <div class="modal-header">
+            <h5 class="modal-title" id="foodUpdateModalLabel">Update Food Item Details</h5>
+          </div>
+          <div class="modal-body">
+
+              <div class="form-group">
+                <label for="foodName">Current Name: {{ item.name }}</label>
+                <input type="text" class="form-control" [(ngModel)]="item.name" name="name" id="foodName"  placeholder="New Name">
+              </div>
+              <div class="form-group">
+                <label for="foodPrice">Current Price: {{ item.price }} </label>
+                <input type="number" class="form-control" [(ngModel)]="item.price" name="price" id="foodPrice"  placeholder="New Price">
+              </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success"> Update</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -194,17 +189,14 @@
           <h5 class="modal-title" id="foodDeleteModalLabel">Delete? Really?</h5>
         </div>
         <div class="modal-body">
-          <form>
             <div class="form-group">
               <label for="foodName">Are you sure you want to delete {{ item.name }} item? </label>
               <p> Deleting this item will permanently remove it from the database. </p>
-              &lt;!&ndash;<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>&ndash;&gt;
             </div>
-          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">No, I changed my mind</button>
-          <button type="submit" class="btn btn-success"> Yes, delete this item</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" (click)="delete(item); "> Yes, delete this item</button>
         </div>
       </div>
     </div>
@@ -252,4 +244,39 @@
     </div>
   </div>
 
+  <!--Add Meat Item Modal-->
+  <div class="modal fade" id="addMeatItemModal" tabindex="-1" role="dialog" aria-labelledby="addMeatItemModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form #addMeatItemForm="ngForm" (ngSubmit)="onSubmitAddMeatItemForm(specialToItemForm)">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addMeatItemFormLabel">Add meat item to Bellisimo</h5>
+          </div>
+          <div class="modal-body">
+            <div *ngIf="specialAlert" class="alert alert-info alert-dismissible fade show" role="alert">
+              <strong> {{ alertMessage }}  </strong>
+            </div>
+            <div class="form-group">
+              <label for="meatName">Name:  </label>
+              <input type="text" class="form-control" id="meatName" [(ngModel)]="new_item.name" name="name"   placeholder="Name" required>
+            </div>
+            <div class="form-group">
+              <label> Code:  <strong>MEA</strong></label>
+            </div>
+            <div class="form-group">
+              <label for="meatPrice"> Price: </label>
+              <input type="number" class="form-control" id="meatPrice" name="price" [(ngModel)]="new_item.price" placeholder="Price" required>
+            </div>
+            <div class="form-group">
+              <label> Category:  <strong>FOOD</strong></label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success" > Add Item</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

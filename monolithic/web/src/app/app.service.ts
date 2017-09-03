@@ -40,12 +40,14 @@ export class AppService {
       .catch(this.handleError);
   }
 
-  createFoodItem(name: String) : Promise<Food>{
+  createFoodItem(food: Food) : Promise<Food>{
     const url =`${this.BASE_URL}/item/add/`;
+
+    var body = JSON.stringify(food);
     return this.http
-      .post(url, JSON.stringify({name: name}), {headers: this.headers})
+      .post(url, body, {headers: this.headers})
       .toPromise()
-      .then(res => res.json().data as Food)
+      .then(res => res.json() as Food)
       .catch(this.handleError);
   }
 
@@ -56,6 +58,8 @@ export class AppService {
       .then(() => null)
       .catch(this.handleError);
   }
+
+
 
   getAllClothingItems() : Promise<Clothing[]>{
     return this.http.get(this.BASE_URL + "/item/list").toPromise()
@@ -100,7 +104,7 @@ export class AppService {
       price : item.price,
       category : item.category,
       image : item.image,
-      special : special,
+      special : special.id,
       hasSpecial: true
     });
     return this.http.post(this.BASE_URL + "/item/add/special", body, {  headers: this.headers})

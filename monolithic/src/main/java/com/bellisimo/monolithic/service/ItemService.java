@@ -3,6 +3,7 @@ package com.bellisimo.monolithic.service;
 import com.bellisimo.monolithic.domain.Item;
 //import com.bellisimo.monolithic.domain.ItemDTO;
 import com.bellisimo.monolithic.domain.ItemDTO;
+import com.bellisimo.monolithic.domain.Special;
 import com.bellisimo.monolithic.exception.CustomException;
 import com.bellisimo.monolithic.mapper.ItemMapper;
 import com.bellisimo.monolithic.repository.ItemRepository;
@@ -10,6 +11,7 @@ import com.bellisimo.monolithic.repository.ItemRepository;
 
 import javax.inject.Inject;
 //import java.util.List;
+import com.bellisimo.monolithic.repository.SpecialRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,9 @@ public class ItemService {
     ItemRepository itemRepository;
 
     @Inject
+    SpecialRepository specialRepository;
+
+    @Inject
     ItemMapper itemMapper;
 
     public ItemDTO addItem(ItemDTO dto){
@@ -34,7 +39,10 @@ public class ItemService {
             dto.setCategory(Item.Category.UNKNOWN);
         }
         try {
+            System.out.println("adding ");
+
             Item obj = itemRepository.save(itemMapper.itemDTOToItem(dto));
+            System.out.println("addded ");
             ItemDTO result = itemMapper.itemToItemDTO(obj);
             return result;
         }catch (Exception e){
@@ -42,13 +50,11 @@ public class ItemService {
         }
     }
 
-    public ItemDTO updateItem(ItemDTO dto){
+    public ItemDTO updateItem(Long id , ItemDTO dto){
         Item item;
-        if (dto.getCode() != null){
-             item = itemRepository.findByCode(dto.getCode());
-        }
-        else if ( dto.getId() != null){
-             item = itemRepository.findOne(dto.getId());
+
+        if ( id != null){
+             item = itemRepository.findOne(id);
         }
         else{
             return addItem(dto);
@@ -58,7 +64,7 @@ public class ItemService {
             if ( item != null){
                 item.setHasSpecial(dto.getHasSpecial());
                 if ( dto.getHasSpecial())
-                    item.setSpecial(dto.getSpecial().toEntity());
+                    item.setSpecial(dto.getSpecial());
                 if ( dto.getImage() != null)
                     item.setImage(dto.getImage());
                 if ( dto.getPrice() != null)
@@ -81,8 +87,10 @@ public class ItemService {
 
     public ItemDTO getItem(Long id){
         Item item = itemRepository.findOne(id);
+
         if ( item.getHasSpecial()){
-            Double specialPrice = item.getPrice() * item.getSpecial().getPercentage();
+            Special special = specialRepository.findOne(item.getSpecial());
+            Double specialPrice = item.getPrice() * special.getPercentage();
             item.setPrice(specialPrice);
         }
         return itemMapper.itemToItemDTO(item);
@@ -95,9 +103,10 @@ public class ItemService {
     public Boolean addSpecialToItem(ItemDTO dto){
         Item item = itemRepository.findOne(dto.getId());
         if (item != null){
-            if (dto.getSpecial() == null){
+            if (dto.getSpecial() != null){
                 item.setHasSpecial(true);
-                item.setSpecial(dto.getSpecial().toEntity());
+                item.setSpecial(dto.getSpecial());
+                itemRepository.save(item);
                 return true;
             }
             else{
@@ -108,7 +117,6 @@ public class ItemService {
         {
             throw new CustomException("A special cannot be applied to the item as the item does not exist");
         }
-
     }
 
     public void removeSpecialFromItem(Long id){
@@ -118,5 +126,6 @@ public class ItemService {
             item.setSpecial(null);
         }
     }
+
 
 }

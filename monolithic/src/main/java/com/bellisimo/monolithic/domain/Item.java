@@ -34,9 +34,8 @@ public class Item {
     @Column(nullable = false, name = "hasSpecial")
     private Boolean hasSpecial;
 
-    @JoinColumn (name = "special")
-    @ManyToOne
-    private Special special;
+
+    private Long special;
 
     public Long getId(){
         return id;
@@ -87,10 +86,10 @@ public class Item {
         this.hasSpecial = hasSpecial;
     }
 
-    public Special getSpecial(){
+    public Long getSpecial(){
         return special;
     }
-    public void setSpecial(Special special){
+    public void setSpecial(Long special){
         this.special = special;
     }
 
@@ -114,28 +113,20 @@ public class Item {
             throw new IllegalArgumentException("No such category: " + name);
         }
     }
-   /* public enum Code{
-        CLO("CLO"),
-        UND("UND"),
-        SHO("SHO"),
-        MEA("MEA"),
-        FRU("FRU"),
-        DAI("DAI");
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", price='" + price + '\'' +
+                ", category='" + category + '\'' +
+                ", image='" + image + '\'' +
+                ", special='" + special + '\'' +
+                ", hasSpecial='" + hasSpecial + '\'' +
+                "}";
+    }
 
 
-        private String name;
-
-        Code(String name){ this.name = name; }
-
-        public String getName() {return name;}
-
-        public static Category fromName(String name) {
-            for (Category procedureState : Category.values()) {
-                if (procedureState.name.equalsIgnoreCase(name)) {
-                    return procedureState;
-                }
-            }
-            throw new IllegalArgumentException("No such code: " + name);
-        }
-    }*/
 }

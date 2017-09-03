@@ -5,6 +5,7 @@ import com.bellisimo.monolithic.domain.ItemDTO;
 import com.bellisimo.monolithic.domain.Special;
 import com.bellisimo.monolithic.domain.SpecialDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -19,10 +20,4 @@ public interface ItemMapper {
 
     ItemDTO itemToItemDTO(Item item);
     List<ItemDTO> itemsToItemDTOs(List<Item> items);
-
-    Special specialDTOToSpecial(SpecialDTO specialDTO);
-    List<Special> specialDTOsToSpecials(List<SpecialDTO> specialDTOS);
-    SpecialDTO specialToSpecialDTO(Special special);
-    List<SpecialDTO> specialsToSpecialDTOs(List<Special> specials);
-
 }

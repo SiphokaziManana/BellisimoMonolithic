@@ -20,7 +20,7 @@ public class ItemDTO {
     private Double price;
     private Item.Category category;
     private Image image;
-    private SpecialDTO special;
+    private Long special;
     private Boolean hasSpecial;
 
 
@@ -72,11 +72,11 @@ public class ItemDTO {
         return image;
     }
 
-    public void setSpecial(SpecialDTO special) {
+    public void setSpecial(Long special) {
         this.special = special;
     }
 
-    public SpecialDTO getSpecial() {
+    public Long getSpecial() {
         return special;
     }
 
@@ -90,6 +90,20 @@ public class ItemDTO {
 
     public Item toEntity(){
         return itemMapper.itemDTOToItem(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", price='" + price + '\'' +
+                ", category='" + category + '\'' +
+                ", image='" + image + '\'' +
+                ", special='" + special + '\'' +
+                ", hasSpecial='" + hasSpecial + '\'' +
+                "}";
     }
 
 }

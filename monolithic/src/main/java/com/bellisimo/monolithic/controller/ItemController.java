@@ -5,6 +5,7 @@ import com.bellisimo.monolithic.domain.ItemDTO;
 import com.bellisimo.monolithic.service.ItemService;*/
 import com.bellisimo.monolithic.domain.Item;
 import com.bellisimo.monolithic.domain.ItemDTO;
+import com.bellisimo.monolithic.domain.ResponseDTO;
 import com.bellisimo.monolithic.service.ItemService;
 import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;
@@ -35,10 +36,9 @@ public class ItemController  {
         return HttpStatus.OK;
     }
 
-    @PutMapping("/update")
-    public HttpStatus updateItem( @RequestBody ItemDTO dto){
-        itemService.updateItem(dto);
-        return  HttpStatus.OK;
+    @PutMapping("/update/{id}")
+    public ItemDTO updateItem( @PathVariable Long id, @RequestBody ItemDTO dto){
+        return  itemService.updateItem(id, dto);
     }
 
     @GetMapping("/list")
@@ -58,9 +58,10 @@ public class ItemController  {
     }
 
     @PostMapping("/add/special")
-    public HttpStatus addSpecialToItem(@RequestBody ItemDTO dto){
+    public ResponseDTO addSpecialToItem(@RequestBody ItemDTO dto){
+        System.out.println("\n \n adding special to item \n " + dto + " \n \n");
         itemService.addSpecialToItem(dto);
-        return HttpStatus.OK;
+        return new ResponseDTO("Special added successfully to item.");
     }
 
     @PutMapping("/remove/special/{itemId}")
