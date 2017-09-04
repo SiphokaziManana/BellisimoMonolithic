@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { Router } from "@angular/router";
-import { ModalModule } from 'ngx-bootstrap';
 import { NgForm } from '@angular/forms';
 
 import { Food } from './food';
@@ -17,9 +16,6 @@ export class FoodComponent implements OnInit {
 
   foodItems : Food[];
   item : Food;
-  meatItems : Food[] = [];
-  fruitItems : Food[] = [];
-  dairyItems: Food[] = [];
   specialForItem : Special;
   new_special = new Special();
   specials : Special[] = [];
@@ -42,42 +38,18 @@ export class FoodComponent implements OnInit {
   getFoodItems() : void{
     this.service.getAllFoodItems().then( result => {
       this.foodItems = result;
-      this.sortFoodItems();
     });
   }
 
   getSpecials():void{
     this.service.getAllSpecials().then(result => {
       this.specials = result;
-      console.log("All the specials", this.specials);
     } );
-  }
-
-  sortFoodItems(): void{
-    for ( let temp of this.foodItems){
-      switch (temp.code)
-      {
-        case "MEA":
-          this.meatItems.push(temp);
-          break;
-        case "FRU":
-          this.fruitItems.push(temp);
-          break;
-        case "DAI":
-          this.dairyItems.push(temp);
-          break;
-      }
-    }
   }
 
   onSelect(food: Food) : void{
     this.item = food;
   }
-
-  /*gotoDetail(foodItem: Food) : void{
-    this.item = foodItem;
-    this.router.navigate(['/food', this.item.id]);
-  }*/
 
   delete(food: Food) : void{
     this.service.delete(food.id)
@@ -130,6 +102,7 @@ export class FoodComponent implements OnInit {
     }
     this.service.addFoodItemToSpecial(this.item, this.specialForItem).then(
         result => {
+          console.log("after update: ", result);
           this.alertMessage = result.message;
           this.specialAlert = true;
           form.reset();
@@ -142,52 +115,26 @@ export class FoodComponent implements OnInit {
 //***************************************************************************************
 
   onSubmitAddMeatItemForm(form: NgForm): void{
-    this.new_item.code = "MEA";
+    this.new_item.code = "FOO";
     this.new_item.category = "FOOD";
     this.new_item.image = null;
     this.new_item.special = null;
     this.new_item.hasSpecial= false;
     this.service.createFoodItem(this.new_item)
       .then(result => {
-        this.meatItems.push(result);
+        this.foodItems.push(result);
         window.location.reload();
       });
   }
 
-  onSubmitAddFruitItemForm(form: NgForm): void{
-    this.new_item.code = "FRU";
-    this.new_item.category = "FOOD";
-    this.new_item.image = null;
-    this.new_item.special = null;
-    this.new_item.hasSpecial= false;
-    this.service.createFoodItem(this.new_item)
-      .then(result => {
-        this.meatItems.push(result);
-        window.location.reload();
-      });
-
-  }
-
-  onSubmitAddDairyItemForm(form: NgForm): void{
-    this.new_item.code = "DAI";
-    this.new_item.category = "FOOD";
-    this.new_item.image = null;
-    this.new_item.special = null;
-    this.new_item.hasSpecial= false;
-    this.service.createFoodItem(this.new_item)
-      .then(result => {
-        this.meatItems.push(result);
-        window.location.reload();
-      });
-  }
-
-  //***************************************************************************************
+//***************************************************************************************
 //********************************** UPDATE ITEMS *****************************************
 //***************************************************************************************
 
   onSubmitFoodUpdateForm(form : NgForm): void{
     this.service.updateFoodItem(this.item)
       .then( result => {
+        console.log("after update: ", result);
         window.location.reload();
       })
   }
@@ -197,6 +144,7 @@ export class FoodComponent implements OnInit {
     food.hasSpecial = false;
     this.service.updateFoodItem(food)
       .then( result => {
+        console.log("after update: ", result);
         window.location.reload();
       });
   }

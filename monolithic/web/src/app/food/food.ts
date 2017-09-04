@@ -8,6 +8,7 @@ export class Food{
   image : string;
   special : number;
   hasSpecial: boolean;
+  specialPrice : number;
 
   constructor(){}
 }

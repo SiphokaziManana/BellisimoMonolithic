@@ -13,17 +13,32 @@ export class AppService {
   private headers = new Headers({'Content-Type': 'application/json'});
   constructor(private http: Http) { }
 
-  getAllFoodItems() : Promise<Food[]>{
-    //@TODO: change this code so that it searches for all items that are category food only
-    return this.http.get(this.BASE_URL + "/item/list").toPromise()
-      .then(response => response.json() as Food[])
-      .catch(this.handleError);
-  }
-
   private handleError( err : any) : Promise<any>{
     console.error("An error occured in the service: ", err);
     //for demo purposes
     return Promise.reject(err.message || err);
+  }
+
+  // =========================================================
+  // ---------------- GET
+  // =========================================================
+  getAllFoodItems() : Promise<Food[]>{
+    //@TODO: change this code so that it searches for all items that are category food only
+    return this.http.get(this.BASE_URL + "/item/list/food").toPromise()
+      .then(response => response.json() as Food[])
+      .catch(this.handleError);
+  }
+
+  getAllClothingItems() : Promise<Clothing[]>{
+    return this.http.get(this.BASE_URL + "/item/list/clothing").toPromise()
+      .then(response => response.json() as Clothing[])
+      .catch(this.handleError);
+  }
+
+  getAllSpecials() : Promise<Special[]>{
+    return this.http.get(this.BASE_URL + "/special/list").toPromise()
+      .then(response => response.json() as Special[])
+      .catch(this.handleError);
   }
 
   getFoodItem(id : number) : Promise<Food>{
@@ -32,6 +47,9 @@ export class AppService {
       .catch(this.handleError);
   }
 
+  // =========================================================
+  // ---------------- PUT
+  // =========================================================
   updateFoodItem( food: Food) : Promise<Food>{
     const url = `${this.BASE_URL}/item/update/${food.id}`;
     return this.http.put(url, JSON.stringify(food), {headers: this.headers})
@@ -39,10 +57,19 @@ export class AppService {
       .then(res => res.json() as Food)
       .catch(this.handleError);
   }
+  updateClothingItem( clothing: Clothing) : Promise<Clothing>{
+    const url = `${this.BASE_URL}/item/update/${clothing.id}`;
+    return this.http.put(url, JSON.stringify(clothing), {headers: this.headers})
+      .toPromise()
+      .then(res => res.json() as Food)
+      .catch(this.handleError);
+  }
 
+  // =========================================================
+  // ---------------- POST
+  // =========================================================
   createFoodItem(food: Food) : Promise<Food>{
     const url =`${this.BASE_URL}/item/add/`;
-
     var body = JSON.stringify(food);
     return this.http
       .post(url, body, {headers: this.headers})
@@ -51,19 +78,13 @@ export class AppService {
       .catch(this.handleError);
   }
 
-  delete(id: number): Promise<void> {
-    const url = `${this.BASE_URL}/item/remove/${id}`;
-    return this.http.delete(url, {headers: this.headers})
+  createClothingItem(clothing : Clothing): Promise<Clothing>{
+    const url =`${this.BASE_URL}/item/add/`;
+    var body = JSON.stringify(clothing);
+    return this.http
+      .post(url, body, {headers: this.headers})
       .toPromise()
-      .then(() => null)
-      .catch(this.handleError);
-  }
-
-
-
-  getAllClothingItems() : Promise<Clothing[]>{
-    return this.http.get(this.BASE_URL + "/item/list").toPromise()
-      .then(response => response.json() as Clothing[])
+      .then(res => res.json() as Food)
       .catch(this.handleError);
   }
 
@@ -84,17 +105,6 @@ export class AppService {
       .then(result => result.json() as CustomResponse);
   }
 
-  addClothingItemToSpecial(): void{
-
-  }
-
-
-  getAllSpecials() : Promise<Special[]>{
-    return this.http.get(this.BASE_URL + "/special/list").toPromise()
-      .then(response => response.json() as Special[])
-      .catch(this.handleError);
-  }
-
   //@TODO: make this method return something meaningful
   addFoodItemToSpecial(item : Food, special : Special ) : Promise<CustomResponse>{
     const body = JSON.stringify({
@@ -111,4 +121,29 @@ export class AppService {
       .toPromise()
       .then(result => result.json() as CustomResponse);
   }
+
+  // =========================================================
+  // ---------------- DELETE
+  // =========================================================
+
+  delete(id: number): Promise<void> {
+    const url = `${this.BASE_URL}/item/remove/${id}`;
+    return this.http.delete(url, {headers: this.headers})
+      .toPromise()
+      .then(() => null)
+      .catch(this.handleError);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

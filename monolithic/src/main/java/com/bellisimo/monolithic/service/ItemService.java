@@ -36,7 +36,7 @@ public class ItemService {
             dto.setHasSpecial(false);
         }
         if (dto.getCategory() == null){
-            dto.setCategory(Item.Category.UNKNOWN);
+            dto.setCategory("UNKNOWN");
         }
         try {
             System.out.println("adding ");
@@ -59,12 +59,18 @@ public class ItemService {
         else{
             return addItem(dto);
         }
-
         try{
             if ( item != null){
-                item.setHasSpecial(dto.getHasSpecial());
-                if ( dto.getHasSpecial())
+
+                if (dto.getHasSpecial()){
+                    Special special = specialRepository.getOne(dto.getSpecial());
+                    item.setHasSpecial(true);
                     item.setSpecial(dto.getSpecial());
+                    item.setSpecialPrice(item.getPrice() * (special.getPercentage()/100));
+                }
+                else{
+                    item.setHasSpecial(false);
+                }
                 if ( dto.getImage() != null)
                     item.setImage(dto.getImage());
                 if ( dto.getPrice() != null)
@@ -81,10 +87,12 @@ public class ItemService {
         }
     }
 
-    public List<ItemDTO> getAllItems(){
-        return itemMapper.itemsToItemDTOs(itemRepository.findAll());
+    public List<ItemDTO> getAllFoodItems(){
+        return itemMapper.itemsToItemDTOs(itemRepository.findByCategory("FOOD"));
     }
-
+    public List<ItemDTO> getAllClothingItems(){
+        return itemMapper.itemsToItemDTOs(itemRepository.findByCategory("CLOTHING"));
+    }
     public ItemDTO getItem(Long id){
         Item item = itemRepository.findOne(id);
 
@@ -100,14 +108,16 @@ public class ItemService {
         itemRepository.delete(id);
     }
 
-    public Boolean addSpecialToItem(ItemDTO dto){
+    public ItemDTO addSpecialToItem(ItemDTO dto){
         Item item = itemRepository.findOne(dto.getId());
         if (item != null){
             if (dto.getSpecial() != null){
+                Special special = specialRepository.getOne(dto.getSpecial());
                 item.setHasSpecial(true);
                 item.setSpecial(dto.getSpecial());
-                itemRepository.save(item);
-                return true;
+                item.setSpecialPrice( item.getPrice() * (special.getPercentage()/100));
+                return itemMapper.itemToItemDTO(itemRepository.save(item));
+
             }
             else{
                 throw new CustomException("There is no special found to be applied to the item");
@@ -118,14 +128,4 @@ public class ItemService {
             throw new CustomException("A special cannot be applied to the item as the item does not exist");
         }
     }
-
-    public void removeSpecialFromItem(Long id){
-        Item item = itemRepository.findOne(id);
-        if (item != null){
-            item.setHasSpecial(false);
-            item.setSpecial(null);
-        }
-    }
-
-
 }

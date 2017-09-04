@@ -24,8 +24,11 @@ public class Item {
     @Column(nullable = false, name = "price")
     private Double price;
 
+    @Column( name = "specialPrice")
+    private Double specialPrice;
+
     @Column(nullable = false, name = "category")
-    private Category category;
+    private String category;
 
     @JoinColumn(name = "image")
     @OneToOne
@@ -65,10 +68,10 @@ public class Item {
         this.price = price;
     }
 
-    public Category getCategory(){
+    public String getCategory(){
         return category;
     }
-    public void setCategory(Category category){
+    public void setCategory(String category){
         this.category = category;
     }
 
@@ -93,25 +96,12 @@ public class Item {
         this.special = special;
     }
 
-    public enum Category{
-        FOOD("Food"),
-        CLOTHING("Clothing"),
-        UNKNOWN("Unknown");
+    public Double getSpecialPrice() {
+        return specialPrice;
+    }
 
-        private String name;
-
-        Category(String name){ this.name = name; }
-
-        public String getName() {return name;}
-
-        public static Category fromName(String name) {
-            for (Category procedureState : Category.values()) {
-                if (procedureState.name.equalsIgnoreCase(name)) {
-                    return procedureState;
-                }
-            }
-            throw new IllegalArgumentException("No such category: " + name);
-        }
+    public void setSpecialPrice(Double specialPrice) {
+        this.specialPrice = specialPrice;
     }
 
     @Override

@@ -29,11 +29,10 @@ public class ItemController  {
     @Inject
     ItemService itemService;
 
-
     @PostMapping("/add")
-    public HttpStatus addItem(@RequestBody ItemDTO dto){
+    public ResponseDTO addItem(@RequestBody ItemDTO dto){
         itemService.addItem(dto);
-        return HttpStatus.OK;
+        return new ResponseDTO("Item has been added");
     }
 
     @PutMapping("/update/{id}")
@@ -41,9 +40,14 @@ public class ItemController  {
         return  itemService.updateItem(id, dto);
     }
 
-    @GetMapping("/list")
-    public List<ItemDTO> getItems(){
-        return itemService.getAllItems();
+    @GetMapping("/list/food")
+    public List<ItemDTO> getFoodItems(){
+        return itemService.getAllFoodItems();
+    }
+
+    @GetMapping("/list/clothing")
+    public List<ItemDTO> getClothingItems(){
+        return itemService.getAllClothingItems();
     }
 
     @GetMapping("/find/{id}")
@@ -52,22 +56,14 @@ public class ItemController  {
     }
 
     @DeleteMapping("/remove/{id}")
-    public HttpStatus deleteItem(@PathVariable Long id){
+    public ResponseDTO deleteItem(@PathVariable Long id){
         itemService.deleteItem(id);
-        return HttpStatus.OK;
+        return new ResponseDTO("Item has been deleted");
     }
 
     @PostMapping("/add/special")
-    public ResponseDTO addSpecialToItem(@RequestBody ItemDTO dto){
+    public ItemDTO addSpecialToItem(@RequestBody ItemDTO dto){
         System.out.println("\n \n adding special to item \n " + dto + " \n \n");
-        itemService.addSpecialToItem(dto);
-        return new ResponseDTO("Special added successfully to item.");
+        return itemService.addSpecialToItem(dto);
     }
-
-    @PutMapping("/remove/special/{itemId}")
-    public HttpStatus removeSpecialFromItem(@PathVariable Long itemId){
-        itemService.removeSpecialFromItem(itemId);
-        return HttpStatus.OK;
-    }
-
 }

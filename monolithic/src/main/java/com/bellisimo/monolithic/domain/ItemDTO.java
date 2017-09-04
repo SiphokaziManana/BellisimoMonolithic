@@ -18,7 +18,8 @@ public class ItemDTO {
     private String name;
     private String code;
     private Double price;
-    private Item.Category category;
+    private Double specialPrice;
+    private String category;
     private Image image;
     private Long special;
     private Boolean hasSpecial;
@@ -56,11 +57,11 @@ public class ItemDTO {
         return price;
     }
 
-    public void setCategory(Item.Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public Item.Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
@@ -86,6 +87,14 @@ public class ItemDTO {
 
     public Boolean getHasSpecial() {
         return hasSpecial;
+    }
+
+    public Double getSpecialPrice() {
+        return specialPrice;
+    }
+
+    public void setSpecialPrice(Double specialPrice) {
+        this.specialPrice = specialPrice;
     }
 
     public Item toEntity(){

@@ -8,6 +8,7 @@ export class Clothing{
   image : string;
   special : number;
   hasSpecial: boolean;
+  specialPrice: number;
 
   constructor(){}
 }
