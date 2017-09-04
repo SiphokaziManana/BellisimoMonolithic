@@ -14,7 +14,9 @@
         <!--</div>-->
       </div>
       <div class="col-4">
-          <a *ngIf="isAdmin && isLoggedIn" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#clothingSpecialModal" > Create Special</a>
+        <a *ngIf="isAdmin && isLoggedIn" href="#" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#clothingSpecialModal" > Create Special</a>
+        <a *ngIf="isAdmin && isLoggedIn"  (click)="changeView(false)" class="btn btn-outline-primary btn-block" > User View</a>
+        <a *ngIf="!isAdmin && !isLoggedIn" (click)="changeView(true)" class="btn btn-outline-primary btn-block" > Admin View</a>
       </div>
     </div>
   </div>
@@ -190,7 +192,7 @@
               <strong> {{ alertMessage }}  </strong>
             </div>
             <div class="form-group">
-              <label>Choose a special to apply this item to: </label>
+              <label>Choose a special to apply this item to: </label><br>
               <label class="btn btn-primary active">
                 <input type="radio" name="special_id" value="0" id="0"  autocomplete="off" checked> No Special selected
               </label><br>

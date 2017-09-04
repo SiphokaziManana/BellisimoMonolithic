@@ -16,8 +16,8 @@ export class ClothingComponent implements OnInit {
 
   clothingItems : Clothing[];
   item : Clothing;
-  isAdmin = false;
-  isLoggedIn = false;
+  isAdmin = true;
+  isLoggedIn = true;
   new_item = new Clothing();
   specialForItem : Special;
   new_special = new Special();
@@ -32,6 +32,12 @@ export class ClothingComponent implements OnInit {
   ngOnInit() {
     this.getClothingItems();
     this.getSpecials();
+  }
+
+  changeView(value : boolean): void{
+    this.isAdmin = value;
+    this.isLoggedIn = value;
+
   }
 
   getClothingItems():void{
@@ -115,6 +121,7 @@ export class ClothingComponent implements OnInit {
     });
   }
 
+
   onSubmitSpecialToItemForm(form : NgForm) : void{
     for ( let special of this.specials){
       if ( special.id == this.special_id){
@@ -124,9 +131,7 @@ export class ClothingComponent implements OnInit {
     this.service.addFoodItemToSpecial(this.item, this.specialForItem).then(
       result => {
         console.log("after update: ", result);
-        this.alertMessage = result.message;
-        this.specialAlert = true;
-        form.reset();
+        window.location.reload();
       }
     );
   }

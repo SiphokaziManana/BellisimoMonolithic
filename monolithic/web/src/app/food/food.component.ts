@@ -47,6 +47,13 @@ export class FoodComponent implements OnInit {
     } );
   }
 
+  changeView(value : boolean): void{
+    this.isAdmin = value;
+    this.isLoggedIn = value;
+
+  }
+
+
   onSelect(food: Food) : void{
     this.item = food;
   }
@@ -103,9 +110,7 @@ export class FoodComponent implements OnInit {
     this.service.addFoodItemToSpecial(this.item, this.specialForItem).then(
         result => {
           console.log("after update: ", result);
-          this.alertMessage = result.message;
-          this.specialAlert = true;
-          form.reset();
+          window.location.reload();
         }
     );
   }

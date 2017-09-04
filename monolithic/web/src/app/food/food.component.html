@@ -16,6 +16,8 @@
       </div>
       <div class="col-4">
         <a href="#" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#foodSpecialModal" > Create Special</a>
+        <a *ngIf="isAdmin && isLoggedIn"  (click)="changeView(false)" class="btn btn-outline-primary btn-block" > User View</a>
+        <a *ngIf="!isAdmin && !isLoggedIn" (click)="changeView(true)" class="btn btn-outline-primary btn-block" > Admin View</a>
       </div>
     </div>
   </div>
@@ -165,10 +167,12 @@
               <strong> {{ alertMessage }}  </strong>
             </div>
               <div class="form-group">
-                <label>Choose a special to apply this item to: </label>
+                <label>Choose a special to apply this item to: </label><br>
+
                   <label class="btn btn-primary active">
                     <input type="radio" name="special_id" value="0" id="0"  autocomplete="off" checked> No Special selected
-                  </label><br>
+                  </label>
+                <br>
                   <div *ngFor="let special of specials">
                     <label class="btn btn-info" >
                         <input type="radio"  name="special_id" value="{{special.id}}" [(ngModel)]="special_id"  id="special.id" autocomplete="off"> {{ special.name }} <br>
@@ -185,13 +189,13 @@
     </div>
   </div>
 
-  <!--Add Meat Item Modal-->
+  <!--Add Food Item Modal-->
   <div class="modal fade" id="addMeatItemModal" tabindex="-1" role="dialog" aria-labelledby="addMeatItemModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <form #addMeatItemForm="ngForm" (ngSubmit)="onSubmitAddMeatItemForm(addMeatItemForm)">
           <div class="modal-header">
-            <h5 class="modal-title" id="addMeatItemFormLabel">Add meat item to Bellisimo</h5>
+            <h5 class="modal-title" id="addMeatItemFormLabel">Add food item to Bellisimo</h5>
           </div>
           <div class="modal-body">
             <div *ngIf="specialAlert" class="alert alert-info alert-dismissible fade show" role="alert">
