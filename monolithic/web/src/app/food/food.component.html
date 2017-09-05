@@ -5,15 +5,15 @@
     <hr class="my-4">
 
     <div class="row">
-      <div class="col-8">
+      <!--<div class="col-8">
         <p>Search for an item via its name here: </p>
-        <!--<div class="col-lg-6" name="filterSearch">-->
+        &lt;!&ndash;<div class="col-lg-6" name="filterSearch">&ndash;&gt;
         <form class="form-inline my-2 my-lg-0 ">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
         </form>
-        <!--</div>-->
-      </div>
+        &lt;!&ndash;</div>&ndash;&gt;
+      </div>-->
       <div class="col-4">
         <a href="#" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#foodSpecialModal" > Create Special</a>
         <a *ngIf="isAdmin && isLoggedIn"  (click)="changeView(false)" class="btn btn-outline-primary btn-block" > User View</a>
@@ -34,7 +34,7 @@
     </div>
     <div class="col-md-4" *ngFor = "let meat of foodItems">
       <div class="card">
-        <img class="card-img-top" src="" alt="Card image cap">
+        <img class="card-img-top" src="../../assets/apple.jpg" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">{{ meat.name }}  <span *ngIf="meat.hasSpecial" class="badge badge-secondary"> Special</span></h4>
           <p *ngIf="!meat.hasSpecial" class="card-text">R {{ meat.price  | number: '1.2-2'}}</p>

@@ -1,10 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform, Injectable } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 
 import { Clothing } from "./clothing";
 import { AppService } from '../app.service';
 import {Special} from "../special";
+
+@Pipe({
+  name: 'searchfilter'
+})
+
+@Injectable()
+export class SearchFilterPipe implements PipeTransform{
+  public transform(items: Clothing[], field : string, value:string) : Clothing[]{
+    if (!items) return [];
+    return items.filter(it => it[field] == value);
+  }
+}
 
 
 @Component({

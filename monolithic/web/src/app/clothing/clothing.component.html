@@ -4,15 +4,16 @@
     <p class="lead">Below is a list of all the clothing items offered by Bellisimo</p>
     <hr class="my-4">
     <div class="row">
-      <div class="col-8">
+      <!--<div class="col-8">
         <p>Search for an item via its name here: </p>
-        <!--<div class="col-lg-6" name="filterSearch">-->
+        &lt;!&ndash;<div class="col-lg-6" name="filterSearch">&ndash;&gt;
           <form class="form-inline my-2 my-lg-0 ">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+            <input #search class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            &lt;!&ndash;<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>&ndash;&gt;
+            <div *ngFor="let item of clothingItems | searchfilter:'name,price,special': search.value">{{ item.name }}</div>
           </form>
-        <!--</div>-->
-      </div>
+        &lt;!&ndash;</div>&ndash;&gt;
+      </div>-->
       <div class="col-4">
         <a *ngIf="isAdmin && isLoggedIn" href="#" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#clothingSpecialModal" > Create Special</a>
         <a *ngIf="isAdmin && isLoggedIn"  (click)="changeView(false)" class="btn btn-outline-primary btn-block" > User View</a>
@@ -26,7 +27,7 @@
     </div>
     <div class="col-md-4" *ngFor = "let cloth of clothingItems">
       <div class="card">
-        <img class="card-img-top" src="" alt="Card image cap">
+        <img class="card-img-top" src="../../assets/shoe.jpg" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">{{ cloth.name }}<span *ngIf="cloth.hasSpecial" class="badge badge-secondary"> Special</span></h4>
           <p class="card-text" *ngIf="!cloth.hasSpecial">R {{ cloth.price | number: '1.2-2' }}</p>

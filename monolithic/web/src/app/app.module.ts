@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { FoodComponent } from './food/food.component';
-import { ClothingComponent } from './clothing/clothing.component';
+import { ClothingComponent, SearchFilterPipe } from './clothing/clothing.component';
 import { ClothingDetailComponent } from './clothing-detail/clothing-detail.component';
 import { FoodDetailComponent } from './food-detail/food-detail.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -23,7 +23,8 @@ import 'bootstrap';
     ClothingComponent,
     ClothingDetailComponent,
     FoodDetailComponent,
-    DashboardComponent
+    DashboardComponent,
+    SearchFilterPipe
 
   ],
   imports: [
