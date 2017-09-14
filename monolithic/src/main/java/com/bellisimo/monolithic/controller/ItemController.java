@@ -1,22 +1,12 @@
 package com.bellisimo.monolithic.controller;
 
-/*import com.bellisimo.monolithic.domain.Item;
 import com.bellisimo.monolithic.domain.ItemDTO;
-import com.bellisimo.monolithic.service.ItemService;*/
-import com.bellisimo.monolithic.domain.Item;
-import com.bellisimo.monolithic.domain.ItemDTO;
-import com.bellisimo.monolithic.domain.ResponseDTO;
 import com.bellisimo.monolithic.service.ItemService;
-import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity;
+import com.bellisimo.monolithic.domain.ResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.List;
-
-/*import javax.inject.Inject;
-import java.util.List;*/
 
 /**
  * Created by siphokazi on 2017/07/17.

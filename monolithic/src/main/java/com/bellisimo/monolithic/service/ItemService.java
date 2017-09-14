@@ -39,10 +39,7 @@ public class ItemService {
             dto.setCategory("UNKNOWN");
         }
         try {
-            System.out.println("adding ");
-
             Item obj = itemRepository.save(itemMapper.itemDTOToItem(dto));
-            System.out.println("addded ");
             ItemDTO result = itemMapper.itemToItemDTO(obj);
             return result;
         }catch (Exception e){
@@ -77,7 +74,8 @@ public class ItemService {
                     item.setPrice(dto.getPrice());
                 if ( dto.getName() != null)
                     item.setName(dto.getName());
-                return itemMapper.itemToItemDTO(itemRepository.save(item));
+                ItemDTO result = itemMapper.itemToItemDTO(itemRepository.save(item));
+                return result;
             }
             else{
                 throw new CustomException("Item Could not be found");
@@ -101,7 +99,8 @@ public class ItemService {
             Double specialPrice = item.getPrice() * special.getPercentage();
             item.setPrice(specialPrice);
         }
-        return itemMapper.itemToItemDTO(item);
+        ItemDTO result = itemMapper.itemToItemDTO(item);
+        return result;
     }
 
     public void deleteItem(Long id){
@@ -116,7 +115,8 @@ public class ItemService {
                 item.setHasSpecial(true);
                 item.setSpecial(dto.getSpecial());
                 item.setSpecialPrice( item.getPrice() * (special.getPercentage()/100));
-                return itemMapper.itemToItemDTO(itemRepository.save(item));
+                ItemDTO result = itemMapper.itemToItemDTO(itemRepository.save(item));
+                return result;
 
             }
             else{
