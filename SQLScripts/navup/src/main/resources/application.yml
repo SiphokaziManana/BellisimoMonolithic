@@ -1,0 +1,31 @@
+server:
+  port: 8761
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+zuul:
+  routes:
+    gis_service:
+      path: /gis/**
+      serviceId: GIS_SERVICE
+      url: http://localhost:9006
+    user_service:
+      path: /user/**
+      serviceId: USER_SERVICE
+      url: http://localhost:9007
+    navigation_service:
+      path: /navigation/**
+      serviceId: NAVIGATION_SERVICE
+      url: http://localhost:9008
+    notification_service:
+      path: /notification/**
+      serviceId: NOTIFICATION_SERVICE
+      url: http://localhost:9009
+    data_service:
+      path: /data/**
+      serviceId: DATA_SERVICE
+      url: http://localhost:9010
+  prefix: /api
+

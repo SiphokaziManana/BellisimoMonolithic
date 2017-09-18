@@ -1,0 +1,27 @@
+server:
+  port: 9008
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+
+#added
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/bellisimo
+    username: cos700
+    password: cos700
+    platform: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: postgresql
+
+logging:
+  level: debug

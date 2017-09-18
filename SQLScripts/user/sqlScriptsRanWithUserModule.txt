@@ -1,0 +1,34 @@
+sudo -u postgres psql navup_user < anon.sql
+
+
+************************************************
+
+siphokazi@siphokazi-HP-ProBook-4530s:~$ sudo -u postgres psql navup_user
+[sudo] password for siphokazi: 
+psql (9.5.6)
+Type "help" for help.
+
+navup_user=# select * from user_module.nav_user;
+navup_user=# grant all priveleges to zweihander;
+ERROR:  syntax error at or near "priveleges"
+LINE 1: grant all priveleges to zweihander;
+                  ^
+navup_user=# grant all privaleges to zweihander;
+ERROR:  syntax error at or near "privaleges"
+LINE 1: grant all privaleges to zweihander;
+                  ^
+navup_user=# grant all privileges to zweihander;
+ERROR:  syntax error at or near "to"
+LINE 1: grant all privileges to zweihander;
+                             ^
+navup_user=# grant all privileges on navup_user to zweihander;
+ERROR:  relation "navup_user" does not exist
+navup_user=# grant all privileges on user_module.nav_user to zweihander;
+GRANT
+navup_user=# grant all privileges on all sequences in schema user_module to zweihander;
+GRANT
+navup_user=# 
+
+
+*********************************************
+
