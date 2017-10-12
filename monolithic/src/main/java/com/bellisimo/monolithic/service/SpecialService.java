@@ -26,43 +26,47 @@ public class SpecialService {
     @Inject
     SpecialMapper specialMapper;
 
+    //1 Vo = { obj, customException } = 2
     public SpecialDTO add(SpecialDTO dto){
-        try {
-            dto.setStartDate(LocalDateTime.now());
-            dto.setEndDate(LocalDateTime.now().plus(20, ChronoUnit.DAYS));
-            Special special = specialMapper.specialDTOToSpecial(dto);
-            Special obj = specialRepository.save(special);
+        try { //a //b
+            dto.setStartDate(LocalDateTime.now());//a
+            dto.setEndDate(LocalDateTime.now().plus(20, ChronoUnit.DAYS));//a
+            Special special = specialMapper.specialDTOToSpecial(dto);//a
+            Special obj = specialRepository.save(special);//a
             SpecialDTO result = specialMapper.specialToSpecialDTO(obj);
-            return result;
+            return result;//a
         }catch (Exception e){
-            throw new CustomException("Could not ADD SPECIAL into the database. Error: " + e.toString());
+            throw new CustomException("Could not ADD SPECIAL into the database. Error: " + e.toString()); //b
         }
     }
 
+    //2 Vo = { obj, customException } = 2
     public SpecialDTO update(SpecialDTO dto){
-        Special obj = specialRepository.findOne(dto.getId());
-        try{
-            if ( obj != null){
-
-                return specialMapper.specialToSpecialDTO(specialRepository.save(obj));
+        Special obj = specialRepository.findOne(dto.getId()); //a
+        try{ //a //b
+            if ( obj != null){ //a //b
+                return specialMapper.specialToSpecialDTO(specialRepository.save(obj));//a
             }
             else{
-                throw new CustomException("Special Could not be found");
+                throw new CustomException("Special Could not be found"); //b
             }
         }catch (Exception e){
-            throw new CustomException("Could not UPDATE SPECIAL in the database. Error: " + e.toString());
+            throw new CustomException("Could not UPDATE SPECIAL in the database. Error: " + e.toString()); //b
         }
     }
 
+    //3
     public List<SpecialDTO> getAll(){
-        return specialMapper.specialsToSpecialDTOs(specialRepository.findAll());
+        return specialMapper.specialsToSpecialDTOs(specialRepository.findAll()); //a
     }
 
+    //4
     public SpecialDTO get(Long id){
-        return specialMapper.specialToSpecialDTO(specialRepository.findOne(id));
+        return specialMapper.specialToSpecialDTO(specialRepository.findOne(id));//a
     }
 
+    //5
     public void delete(Long id){
-        specialRepository.delete(id);
+        specialRepository.delete(id);//a
     }
 }
